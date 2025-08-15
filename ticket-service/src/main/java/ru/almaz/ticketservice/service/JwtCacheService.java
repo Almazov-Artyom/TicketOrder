@@ -40,7 +40,7 @@ public class JwtCacheService {
         return accessToken;
     }
 
-    public String getRefreshTokenToken(String email) {
+    public String getRefreshToken(String email) {
         Cache accessTokenCache = cacheManager.getCache(refreshTokenCacheName);
         String refreshToken = null;
         if (accessTokenCache != null) {
