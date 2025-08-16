@@ -2,6 +2,7 @@ package ru.almaz.ticketservice.dao;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -65,8 +66,12 @@ public class UserDao {
     }
 
     public Optional<User> findByEmail(String email) {
-        User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL_SQL, User.class, email);
-        return Optional.ofNullable(user);
+        try {
+            User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL_SQL, User.class, email);
+            return Optional.ofNullable(user);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
 }
