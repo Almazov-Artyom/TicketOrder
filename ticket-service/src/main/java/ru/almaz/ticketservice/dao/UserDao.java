@@ -3,11 +3,14 @@ package ru.almaz.ticketservice.dao;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.entity.User;
+import ru.almaz.ticketservice.enums.Role;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +70,7 @@ public class UserDao {
 
     public Optional<User> findByEmail(String email) {
         try {
-            User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL_SQL, User.class, email);
+            User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL_SQL, new BeanPropertyRowMapper<>(User.class) , email);
             return Optional.ofNullable(user);
         } catch (DataAccessException e) {
             return Optional.empty();
