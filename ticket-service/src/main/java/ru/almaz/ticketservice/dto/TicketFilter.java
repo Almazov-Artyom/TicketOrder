@@ -1,27 +1,32 @@
 package ru.almaz.ticketservice.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-public record TicketFilter(
+@Getter
+@Setter
+public class TicketFilter{
         @NotBlank(message = "limit не может быть пустым")
-        Integer limit,
+        private Integer limit;
 
         @NotBlank(message = "offset не может быть пустым")
-        Integer offset,
+        private Integer offset;
 
         @ColumnMapping("t.departure_time")
-        LocalDateTime departureTime,
+        private Timestamp departureTime;
 
         @ColumnMapping("r.origin")
-        String origin,
+        private String origin;
 
         @ColumnMapping("r.destination")
-        String destination,
+        private String destination;
 
         @ColumnMapping("c.name")
-        String carrierName
-) {
+        private String carrierName;
 }
+
+

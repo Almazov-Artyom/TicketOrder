@@ -77,7 +77,7 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
         }
         sql.append("AND t.status='AVAILABLE'");
         sql.append(" ORDER BY t.departure_time");
-        sql.append(String.format(" LIMIT %s OFFSET %d ",filter.limit(), filter.offset()));
+        sql.append(String.format(" LIMIT %s OFFSET %d ",filter.getLimit(), filter.getOffset()));
         return sql.toString();
     }
 }
