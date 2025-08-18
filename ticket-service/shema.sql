@@ -1,5 +1,18 @@
-INSERT INTO ticket (route_id, departure_time, seat_number, price, status) VALUES
-                                                                              (1, '2025-08-20 10:00', '12A', 4500.00, 'AVAILABLE'),
-                                                                              (1, '2025-08-20 10:00', '12B', 4500.00, 'PURCHASED'),
-                                                                              (2, '2025-08-22 18:00', '05', 3200.00, 'AVAILABLE'),
-                                                                              (3, '2025-08-25 08:30', '20', 55.50, 'AVAILABLE');
+SELECT
+    t.id AS ticket_id,
+    r.id AS route_id,
+    r.origin AS route_origin,
+    r.destination AS route_destination,
+    c.id AS carrier_id,
+    c.name AS carrier_name,
+    c.phone_number AS carrier_phone_number,
+    r.duration AS route_duration,
+    t.departure_time AS ticket_departure_time,
+    t.seat_number AS ticket_seat_number,
+    t.price AS ticket_price,
+    t.status AS ticket_status
+FROM ticket AS t
+         JOIN route AS r ON t.route_id = r.id
+         JOIN carrier AS c ON r.carrier_id = c.id
+WHERE 1=1
+  AND t.status='AVAILABLE' ORDER BY t.departure_time LIMIT 2 OFFSET 0
