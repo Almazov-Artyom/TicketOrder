@@ -6,8 +6,7 @@ import ru.almaz.ticketservice.annotation.ColumnMapping;
 import ru.almaz.ticketservice.dto.TicketFilter;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<TicketFilter> {
@@ -54,8 +53,9 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
 
     @Override
     @SneakyThrows
-    public String buildSql(TicketFilter filter) {
+    public Map.Entry<String, List<Object>> buildSqlAndParams(TicketFilter filter) {
         StringBuilder sql = new StringBuilder(FIND_AVAILABLE_TICKETS_SQL);
+        List<Object> params = new ArrayList<>();
 
         Class<TicketFilter> ticketFilterClass = TicketFilter.class;
         Field[] declaredFields = ticketFilterClass.getDeclaredFields();
@@ -67,17 +67,23 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
                 String column = fieldToColumn.get(declaredField.getName());
                 if (column == null) continue;
 
-                sql.append("AND ").append(column);
-                if (value instanceof String strValue) {
-                    sql.append(" ILIKE '%").append(strValue).append("%' ");
+                sql.append(" AND ").append(column);
+                if (value instanceof String) {
+                    sql.append(" ILIKE ?");
+                    params.add("%" + value + "%");
                 } else {
-                    sql.append(" = '").append(value).append("' ");
+                    sql.append(" = ? ");
+                    params.add(value);
                 }
             }
         }
-        sql.append("AND t.status='AVAILABLE'");
-        sql.append(" ORDER BY t.departure_time");
-        sql.append(String.format(" LIMIT %s OFFSET %d ",filter.getLimit(), filter.getOffset()));
-        return sql.toString();
+
+        sql.append(" AND t.status='AVAILABLE'");
+        sql.append(" ORDER BY t.departure_time LIMIT ? OFFSET ?");
+
+        params.add(filter.getLimit());
+        params.add(filter.getOffset());
+
+        return Map.entry(sql.toString(), params);
     }
 }

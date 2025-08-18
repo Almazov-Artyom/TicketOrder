@@ -7,10 +7,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.almaz.ticketservice.exception.InvalidAccessTokenException;
-import ru.almaz.ticketservice.exception.InvalidRefreshTokenException;
-import ru.almaz.ticketservice.exception.UserAlreadyExistException;
-import ru.almaz.ticketservice.exception.UserUnauthenticatedException;
+import ru.almaz.ticketservice.exception.*;
 
 import java.nio.file.AccessDeniedException;
 
@@ -19,6 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             UserAlreadyExistException.class,
             UsernameNotFoundException.class,
+            InvalidDepartureTimeException.class
     })
     public ProblemDetail handleUserAlreadyExistException(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());

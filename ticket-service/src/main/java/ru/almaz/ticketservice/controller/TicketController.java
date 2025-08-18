@@ -20,6 +20,7 @@ public class TicketController {
 
     @GetMapping
     public List<TicketDto> getAvailableTickets(@RequestBody @Valid TicketFilter ticketFilter) {
+        System.out.println(ticketFilter.getDepartureTime());
         return ticketService.getAvailableTickets(ticketFilter);
     }
 }

@@ -14,6 +14,8 @@ import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class TicketDao {
 
     private final SqlTicketFilterBuilder<TicketFilter> sqlTicketFilterBuilder;
 
-    private static final String CREATE_TABLE_SQL= """
+    private static final String CREATE_TABLE_SQL = """
                 CREATE TABLE IF NOT EXISTS ticket (
                     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                     route_id BIGINT,
@@ -40,31 +42,35 @@ public class TicketDao {
     }
 
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
-        String sql = sqlTicketFilterBuilder.buildSql(ticketFilter);
-        System.out.println(sql);
-       return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Carrier carrier = new Carrier();
-            carrier.setId(rs.getLong("carrier_id"));
-            carrier.setName(rs.getString("carrier_name"));
-            carrier.setPhoneNumber(rs.getString("carrier_phone_number"));
+        Map.Entry<String, List<Object>> sqlAndParams = sqlTicketFilterBuilder.buildSqlAndParams(ticketFilter);
+        String sql = sqlAndParams.getKey();
+        List<Object> params = sqlAndParams.getValue();
 
-            Route route = new Route();
-            route.setId(rs.getLong("route_id"));
-            route.setOrigin(rs.getString("route_origin"));
-            route.setDestination(rs.getString("route_destination"));
-            route.setCarrier(carrier);
-            route.setDuration(Duration.ofMinutes(rs.getInt("route_duration")));
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+                    Carrier carrier = new Carrier();
+                    carrier.setId(rs.getLong("carrier_id"));
+                    carrier.setName(rs.getString("carrier_name"));
+                    carrier.setPhoneNumber(rs.getString("carrier_phone_number"));
 
-            Ticket ticket = new Ticket();
-            ticket.setId(rs.getLong("ticket_id"));
-            ticket.setRoute(route);
-            ticket.setDepartureTime(rs.getTimestamp("ticket_departure_time").toLocalDateTime());
-            ticket.setSeatNumber(rs.getString("ticket_seat_number"));
-            ticket.setPrice(rs.getBigDecimal("ticket_price"));
-            ticket.setStatus(TicketStatus.valueOf(rs.getString("ticket_status")));
+                    Route route = new Route();
+                    route.setId(rs.getLong("route_id"));
+                    route.setOrigin(rs.getString("route_origin"));
+                    route.setDestination(rs.getString("route_destination"));
+                    route.setCarrier(carrier);
+                    route.setDuration(Duration.ofMinutes(rs.getInt("route_duration")));
 
-            return ticket;
-        });
+                    Ticket ticket = new Ticket();
+                    ticket.setId(rs.getLong("ticket_id"));
+                    ticket.setRoute(route);
+                    ticket.setDepartureTime(rs.getTimestamp("ticket_departure_time").toLocalDateTime());
+                    ticket.setSeatNumber(rs.getString("ticket_seat_number"));
+                    ticket.setPrice(rs.getBigDecimal("ticket_price"));
+                    ticket.setStatus(TicketStatus.valueOf(rs.getString("ticket_status")));
+
+                    return ticket;
+
+                }, params.toArray()
+        );
     }
 }
 

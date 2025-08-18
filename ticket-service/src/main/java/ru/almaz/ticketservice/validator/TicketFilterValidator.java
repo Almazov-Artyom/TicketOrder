@@ -15,7 +15,7 @@ public class TicketFilterValidator {
         if (timestamp != null) {
             Timestamp now = new Timestamp(System.currentTimeMillis());
             if (timestamp.before(now)) {
-                throw new InvalidDepartureTimeException("Дата/время не может быть в прошлом");
+                throw new InvalidDepartureTimeException("Дата/время не валидны");
             }
         }
     }

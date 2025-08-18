@@ -1,5 +1,6 @@
 package ru.almaz.ticketservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class TicketFilter{
         private Integer offset;
 
         @ColumnMapping("t.departure_time")
+        @JsonProperty("departure_time")
         private Timestamp departureTime;
 
         @ColumnMapping("r.origin")
@@ -27,6 +29,7 @@ public class TicketFilter{
         private String destination;
 
         @ColumnMapping("c.name")
+        @JsonProperty("carrier_name")
         private String carrierName;
 }
 
