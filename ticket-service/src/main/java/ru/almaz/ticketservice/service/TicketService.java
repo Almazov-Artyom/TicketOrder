@@ -27,7 +27,7 @@ public class TicketService {
         return allAvailableTickets.stream().map(ticket -> {
             Route route = ticket.getRoute();
             Carrier carrier = route.getCarrier();
-            String duration = route.getDuration().toString() + " min";
+            String duration = (route.getDuration().toMinutes()) + " min";
             return new TicketDto(
                     route.getOrigin(), route.getDestination(), carrier.getName(), duration,
                     ticket.getDepartureTime(), ticket.getSeatNumber(), ticket.getPrice()

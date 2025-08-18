@@ -18,8 +18,5 @@ public class TicketFilterValidator {
                 throw new InvalidDepartureTimeException("Дата/время не может быть в прошлом");
             }
         }
-        LocalDate today = LocalDate.now();
-        ticketFilter.setDepartureTime(Timestamp.valueOf(today.atStartOfDay()));
-
     }
 }
