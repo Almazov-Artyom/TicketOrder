@@ -1,6 +1,7 @@
 package ru.almaz.ticketservice.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
@@ -10,10 +11,10 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class TicketFilter{
-        @NotBlank(message = "limit не может быть пустым")
+        @NotNull(message = "limit не может быть пустым")
         private Integer limit;
 
-        @NotBlank(message = "offset не может быть пустым")
+        @NotNull(message = "offset не может быть пустым")
         private Integer offset;
 
         @ColumnMapping("t.departure_time")

@@ -41,6 +41,7 @@ public class TicketDao {
 
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
         String sql = sqlTicketFilterBuilder.buildSql(ticketFilter);
+        System.out.println(sql);
        return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Carrier carrier = new Carrier();
             carrier.setId(rs.getLong("carrier_id"));
