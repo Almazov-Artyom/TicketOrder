@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public record TicketDto(
+        Long id,
+
         String origin,
 
         String destination,

@@ -11,6 +11,7 @@ import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.exception.TicketUnavailableException;
+import ru.almaz.ticketservice.mapper.TicketMapper;
 import ru.almaz.ticketservice.validator.TicketFilterValidator;
 
 import java.util.List;
@@ -26,21 +27,18 @@ public class TicketService {
 
     private final UserTicketDao userTicketDao;
 
+    private final TicketMapper ticketMapper;
+
     @Transactional
     public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
         ticketFilterValidator.dateValidation(ticketFilter);
 
         List<Ticket> allAvailableTickets = ticketDao.findAllAvailableTickets(ticketFilter);
 
-        return allAvailableTickets.stream().map(ticket -> {
-            Route route = ticket.getRoute();
-            Carrier carrier = route.getCarrier();
-            String duration = (route.getDuration().toMinutes()) + " min";
-            return new TicketDto(
-                    route.getOrigin(), route.getDestination(), carrier.getName(), duration,
-                    ticket.getDepartureTime(), ticket.getSeatNumber(), ticket.getPrice()
-            );
-        }).toList();
+        return allAvailableTickets
+                .stream()
+                .map(ticketMapper::toDto)
+                .toList();
     }
 
     @Transactional
