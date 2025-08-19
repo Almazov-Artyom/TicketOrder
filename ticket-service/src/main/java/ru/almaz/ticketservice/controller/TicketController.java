@@ -2,10 +2,7 @@ package ru.almaz.ticketservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.almaz.ticketservice.dto.TicketDto;
 import ru.almaz.ticketservice.dto.TicketFilter;
 import ru.almaz.ticketservice.service.TicketService;
@@ -13,7 +10,7 @@ import ru.almaz.ticketservice.service.TicketService;
 import java.util.List;
 
 @RestController
-@RequestMapping("ticket")
+@RequestMapping("/ticket")
 @RequiredArgsConstructor
 public class TicketController {
     private final TicketService ticketService;
@@ -21,5 +18,10 @@ public class TicketController {
     @GetMapping
     public List<TicketDto> getAvailableTickets(@RequestBody @Valid TicketFilter ticketFilter) {
         return ticketService.getAvailableTickets(ticketFilter);
+    }
+
+    @PostMapping("/buy/{ticketId}")
+    public void buyTicket(@PathVariable Long ticketId) {
+        ticketService.buyTicket(ticketId);
     }
 }

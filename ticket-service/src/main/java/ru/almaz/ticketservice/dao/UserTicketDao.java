@@ -20,9 +20,17 @@ public class UserTicketDao {
                 )
             """;
 
+    private static final String SAVE_SQL = """
+                INSERT INTO user_ticket (user_id, ticket_id) VALUES (?, ?)
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
+    }
+
+    public void save(Long userId, Long ticketId) {
+        jdbcTemplate.update(SAVE_SQL, userId, ticketId);
     }
 
 

@@ -44,6 +44,12 @@ public class TicketDao {
                 )
             """;
 
+    private static final String UPDATE_TICKET_STATUS_SQL = """
+                UPDATE ticket
+                SET status = 'PURCHASED'
+                WHERE id = ?
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -84,6 +90,10 @@ public class TicketDao {
     public boolean existTicketForPurchase(Long ticketId) {
         Boolean exists = jdbcTemplate.queryForObject(EXIST_TICKET_FOR_PURCHASE_SQL, Boolean.class, ticketId);
         return Boolean.TRUE.equals(exists);
+    }
+
+    public void updateTicketStatus(Long ticketId) {
+        jdbcTemplate.update(UPDATE_TICKET_STATUS_SQL, ticketId);
     }
 }
 

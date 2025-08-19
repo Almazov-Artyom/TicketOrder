@@ -16,7 +16,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             UserAlreadyExistException.class,
             UsernameNotFoundException.class,
-            InvalidDepartureTimeException.class
+            InvalidDepartureTimeException.class,
+            TicketUnavailableException.class,
     })
     public ProblemDetail handleUserAlreadyExistException(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
