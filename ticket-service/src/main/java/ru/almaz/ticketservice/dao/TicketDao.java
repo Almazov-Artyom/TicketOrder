@@ -36,6 +36,14 @@ public class TicketDao {
                 )
             """;
 
+    private static final String EXIST_TICKET_FOR_PURCHASE_SQL = """
+                SELECT EXISTS(
+                    SELECT *
+                    FROM ticket
+                    WHERE id = ? AND departure_time >= NOW() AND status = 'AVAILABLE'
+                )
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -71,6 +79,11 @@ public class TicketDao {
 
                 }, params.toArray()
         );
+    }
+
+    public boolean existTicketForPurchase(Long ticketId) {
+        Boolean exists = jdbcTemplate.queryForObject(EXIST_TICKET_FOR_PURCHASE_SQL, Boolean.class, ticketId);
+        return Boolean.TRUE.equals(exists);
     }
 }
 
