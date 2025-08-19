@@ -72,7 +72,7 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
                     sql.append(" ILIKE ?");
                     params.add("%" + value + "%");
                 } else {
-                    sql.append(" = ? ");
+                    sql.append(" >= ? ");
                     params.add(value);
                 }
             }
