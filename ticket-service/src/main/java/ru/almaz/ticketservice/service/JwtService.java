@@ -36,12 +36,14 @@ public class JwtService {
 
     private String generateToken(UserDetails userDetails, Duration lifetime) {
         Map<String, Object> claims = new HashMap<>();
+        String subject = "";
         if (userDetails instanceof User customUserDetails) {
             claims.put("role", customUserDetails.getRole().toString());
+            subject = customUserDetails.getId().toString();
         }
         return Jwts.builder()
                 .claims(claims)
-                .subject(userDetails.getUsername())
+                .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + lifetime.toMillis()))
                 .signWith(getSigningKey())
@@ -73,7 +75,7 @@ public class JwtService {
         return generateToken(userDetails, refreshTokenTtl);
     }
 
-    public String extractEmail(String token) {
+    public String extractUserId(String token) {
         return extractClaims(token, Claims::getSubject);
     }
 

@@ -5,7 +5,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.almaz.ticketservice.dto.*;
@@ -15,8 +14,6 @@ import ru.almaz.ticketservice.exception.UserUnauthenticatedException;
 import ru.almaz.ticketservice.mapper.UserMapper;
 import ru.almaz.ticketservice.validator.JwtValidator;
 import ru.almaz.ticketservice.validator.UserValidator;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -60,8 +57,10 @@ public class AuthService {
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
 
-            jwtCacheService.putAccessToken(user.getUsername(), accessToken);
-            jwtCacheService.putRefreshToken(user.getUsername(), refreshToken);
+            String userId = user.getId().toString();
+
+            jwtCacheService.putAccessToken(userId, accessToken);
+            jwtCacheService.putRefreshToken(userId, refreshToken);
 
             return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException ex) {
@@ -71,21 +70,21 @@ public class AuthService {
 
     public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String refreshToken = refreshTokenRequest.refreshToken();
-        String email = jwtService.extractEmail(refreshToken);
+        String userId = jwtService.extractUserId(refreshToken);
 
-        jwtValidator.isRefreshTokenValid(email, refreshToken);
+        jwtValidator.isRefreshTokenValid(userId, refreshToken);
 
         String role = jwtService.extractRole(refreshToken);
 
         User user = new User();
-        user.setEmail(email);
+        user.setId(Long.parseLong(userId));
         user.setRole(Role.valueOf(role));
 
         String newAccessToken = jwtService.generateAccessToken(user);
         String newRefreshToken = jwtService.generateRefreshToken(user);
 
-        jwtCacheService.putAccessToken(email, newAccessToken);
-        jwtCacheService.putRefreshToken(email, newRefreshToken);
+        jwtCacheService.putAccessToken(userId, newAccessToken);
+        jwtCacheService.putRefreshToken(userId, newRefreshToken);
 
         return new RefreshTokenResponse(newAccessToken,newRefreshToken);
     }

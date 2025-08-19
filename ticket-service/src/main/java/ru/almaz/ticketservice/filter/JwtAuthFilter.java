@@ -44,15 +44,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(BEARER_PREFIX.length());
         try {
-            String email = jwtService.extractEmail(token);
-            jwtValidator.isAccessTokenValid(email, token);
+            String userId = jwtService.extractUserId(token);
+            jwtValidator.isAccessTokenValid(userId, token);
 
             String role = jwtService.extractRole(token);
 
             List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    email, null, authorities
+                    userId, null, authorities
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);

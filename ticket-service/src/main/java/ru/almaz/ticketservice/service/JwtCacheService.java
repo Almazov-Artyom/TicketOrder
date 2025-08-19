@@ -17,34 +17,34 @@ public class JwtCacheService {
     @Value("${cache.refresh-token.name}")
      private String refreshTokenCacheName;
 
-    public void putAccessToken(String email, String accessToken) {
+    public void putAccessToken(String userId, String accessToken) {
         Cache accessTokenCache = cacheManager.getCache(accessTokenCacheName);
         if (accessTokenCache != null) {
-            accessTokenCache.put(email, accessToken);
+            accessTokenCache.put(userId, accessToken);
         }
     }
 
-    public void putRefreshToken(String email, String refreshToken) {
+    public void putRefreshToken(String userId, String refreshToken) {
         Cache accessTokenCache = cacheManager.getCache(refreshTokenCacheName);
         if (accessTokenCache != null) {
-            accessTokenCache.put(email, refreshToken);
+            accessTokenCache.put(userId, refreshToken);
         }
     }
 
-    public String getAccessToken(String email) {
+    public String getAccessToken(String userId) {
         Cache accessTokenCache = cacheManager.getCache(accessTokenCacheName);
         String accessToken = null;
         if (accessTokenCache != null) {
-            accessToken = accessTokenCache.get(email, String.class);
+            accessToken = accessTokenCache.get(userId, String.class);
         }
         return accessToken;
     }
 
-    public String getRefreshToken(String email) {
+    public String getRefreshToken(String userId) {
         Cache accessTokenCache = cacheManager.getCache(refreshTokenCacheName);
         String refreshToken = null;
         if (accessTokenCache != null) {
-            refreshToken = accessTokenCache.get(email, String.class);
+            refreshToken = accessTokenCache.get(userId, String.class);
         }
         return refreshToken;
     }
