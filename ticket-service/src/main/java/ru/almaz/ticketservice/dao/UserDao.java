@@ -37,6 +37,7 @@ public class UserDao {
     private static final String SAVE_SQL = """
                 INSERT INTO users (email, password, last_name, first_name, middle_name, role)
                 VALUES (?, ?, ?, ?, ?, ?)
+                RETURNING id;
             """;
 
     private static final String FIND_BY_EMAIL_SQL = """
@@ -64,7 +65,7 @@ public class UserDao {
             return ps;
         }, generatedKeyHolder);
 
-        user.setId(((Number) Objects.requireNonNull(generatedKeyHolder.getKeys()).get("id")).longValue());
+        user.setId((Long) generatedKeyHolder.getKey());
         return user;
     }
 

@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 @Component
-public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<TicketFilter> {
+public class TicketFilterSqlParamsBuilder implements SqlParamsBuilder<TicketFilter> {
 
     private final Map<String, String> fieldToColumn;
 
@@ -46,14 +46,14 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
         }
     }
 
-    public SqlTicketFilterBuilderImpl() {
+    public TicketFilterSqlParamsBuilder() {
         fieldToColumn = new HashMap<>();
         cacheFields();
     }
 
     @Override
     @SneakyThrows
-    public Map.Entry<String, List<Object>> buildSqlAndParams(TicketFilter filter) {
+    public Map.Entry<String, List<Object>> buildSqlAndParams(TicketFilter t) {
         StringBuilder sql = new StringBuilder(FIND_AVAILABLE_TICKETS_SQL);
         List<Object> params = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
 
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
-            Object value = declaredField.get(filter);
+            Object value = declaredField.get(t);
             if (value != null) {
                 String column = fieldToColumn.get(declaredField.getName());
                 if (column == null) continue;
@@ -81,8 +81,8 @@ public class SqlTicketFilterBuilderImpl implements SqlTicketFilterBuilder<Ticket
         sql.append(" AND t.status='AVAILABLE'");
         sql.append(" ORDER BY t.departure_time LIMIT ? OFFSET ?");
 
-        params.add(filter.getLimit());
-        params.add(filter.getOffset());
+        params.add(t.getLimit());
+        params.add(t.getOffset());
 
         return Map.entry(sql.toString(), params);
     }

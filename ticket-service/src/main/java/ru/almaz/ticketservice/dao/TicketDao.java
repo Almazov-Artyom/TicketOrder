@@ -3,31 +3,25 @@ package ru.almaz.ticketservice.dao;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.almaz.ticketservice.dao.builder.SqlTicketFilterBuilder;
+import ru.almaz.ticketservice.dao.builder.SqlParamsBuilder;
 import ru.almaz.ticketservice.dto.TicketFilter;
-import ru.almaz.ticketservice.entity.Carrier;
-import ru.almaz.ticketservice.entity.Route;
 import ru.almaz.ticketservice.entity.Ticket;
-import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.mapper.TicketRowMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
 public class TicketDao {
     private final JdbcTemplate jdbcTemplate;
 
-    private final SqlTicketFilterBuilder<TicketFilter> sqlTicketFilterBuilder;
+    private final SqlParamsBuilder<TicketFilter> sqlTicketFilterBuilder;
 
     private final TicketRowMapper ticketRowMapper;
 

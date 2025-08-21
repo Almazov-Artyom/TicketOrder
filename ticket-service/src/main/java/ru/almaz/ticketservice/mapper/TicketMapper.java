@@ -2,7 +2,7 @@ package ru.almaz.ticketservice.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.almaz.ticketservice.dto.TicketDto;
-import ru.almaz.ticketservice.dto.TicketRequest;
+import ru.almaz.ticketservice.dto.AddTicketRequest;
 import ru.almaz.ticketservice.dto.TicketResponse;
 import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
@@ -24,7 +24,7 @@ public class TicketMapper {
         );
     }
 
-    public Ticket toTicket(TicketRequest ticketRequest) {
+    public Ticket toTicket(AddTicketRequest ticketRequest) {
         Route route = new Route();
         route.setId(ticketRequest.routeId());
 

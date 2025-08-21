@@ -7,10 +7,8 @@ import ru.almaz.ticketservice.dao.TicketDao;
 import ru.almaz.ticketservice.dao.UserTicketDao;
 import ru.almaz.ticketservice.dto.TicketDto;
 import ru.almaz.ticketservice.dto.TicketFilter;
-import ru.almaz.ticketservice.dto.TicketRequest;
+import ru.almaz.ticketservice.dto.AddTicketRequest;
 import ru.almaz.ticketservice.dto.TicketResponse;
-import ru.almaz.ticketservice.entity.Carrier;
-import ru.almaz.ticketservice.entity.Route;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.exception.TicketUnavailableException;
@@ -57,7 +55,7 @@ public class TicketService {
     }
 
     @Transactional
-    public TicketResponse saveTicket(TicketRequest ticketRequest) {
+    public TicketResponse saveTicket(AddTicketRequest ticketRequest) {
         Ticket ticket = ticketMapper.toTicket(ticketRequest);
         ticket.setStatus(TicketStatus.AVAILABLE);
         ticketDao.save(ticket);

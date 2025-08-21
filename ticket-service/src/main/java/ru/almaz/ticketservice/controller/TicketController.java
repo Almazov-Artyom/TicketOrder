@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.almaz.ticketservice.dto.TicketDto;
 import ru.almaz.ticketservice.dto.TicketFilter;
-import ru.almaz.ticketservice.dto.TicketRequest;
+import ru.almaz.ticketservice.dto.AddTicketRequest;
 import ru.almaz.ticketservice.dto.TicketResponse;
 import ru.almaz.ticketservice.service.TicketService;
 
@@ -28,7 +28,7 @@ public class TicketController {
     }
 
     @PostMapping
-    public TicketResponse addTicket(@RequestBody @Valid TicketRequest ticketRequest) {
+    public TicketResponse addTicket(@RequestBody @Valid AddTicketRequest ticketRequest) {
         return ticketService.saveTicket(ticketRequest);
     }
 }

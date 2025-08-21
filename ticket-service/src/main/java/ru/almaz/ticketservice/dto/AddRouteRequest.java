@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.Duration;
 
-public record RouteRequest (
+public record AddRouteRequest(
         @NotBlank(message = "Пункт отправления не может быть пустым")
         String origin,
 

@@ -42,7 +42,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
 
-        userService.save(user);
+        userService.saveUser(user);
         return new RegistrationResponse("Вы успешно зарегистрировались");
     }
 

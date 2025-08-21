@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.almaz.ticketservice.dao.CarrierDao;
 import ru.almaz.ticketservice.dto.CarrierDto;
-import ru.almaz.ticketservice.dto.CarrierRequest;
+import ru.almaz.ticketservice.dto.AddCarrierRequest;
 import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.mapper.CarrierMapper;
 
@@ -18,7 +18,7 @@ public class CarrierService {
     private final CarrierMapper carrierMapper;
 
     @Transactional
-    public CarrierDto save(CarrierRequest carrierRequest) {
+    public CarrierDto save(AddCarrierRequest carrierRequest) {
         Carrier carrier = carrierMapper.toCarrier(carrierRequest);
         carrierDao.save(carrier);
         return carrierMapper.toCarrierDto(carrier);

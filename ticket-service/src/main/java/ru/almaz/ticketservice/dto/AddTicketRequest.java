@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TicketRequest(
+public record AddTicketRequest(
         @NotNull(message = "route_id не может быть null")
         @JsonProperty("route_id")
         Long routeId,

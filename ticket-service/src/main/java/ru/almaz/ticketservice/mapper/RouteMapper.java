@@ -1,10 +1,8 @@
 package ru.almaz.ticketservice.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
 import org.springframework.stereotype.Component;
 import ru.almaz.ticketservice.dto.RouteDto;
-import ru.almaz.ticketservice.dto.RouteRequest;
+import ru.almaz.ticketservice.dto.AddRouteRequest;
 import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
 
@@ -13,7 +11,7 @@ import java.time.Duration;
 @Component
 public class RouteMapper {
 
-    public Route toRoute(RouteRequest routeRequest) {
+    public Route toRoute(AddRouteRequest routeRequest) {
         Carrier carrier = new Carrier();
         carrier.setId(routeRequest.carrierId());
 
