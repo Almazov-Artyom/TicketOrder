@@ -42,6 +42,9 @@ public class UpdateCarrierSqlParamsBuilder implements SqlParamsBuilder<UpdateCar
         Class<UpdateCarrierDto> updateCarrierDtoClass = UpdateCarrierDto.class;
         Field[] declaredFields = updateCarrierDtoClass.getDeclaredFields();
 
+        sql.append(" SET ");
+
+        boolean first = true;
         for (Field field : declaredFields) {
             field.setAccessible(true);
             Object value = field.get(updateCarrierDto);
@@ -49,7 +52,10 @@ public class UpdateCarrierSqlParamsBuilder implements SqlParamsBuilder<UpdateCar
                 String columnName = fieldToColumn.get(field.getName());
                 if(columnName == null) continue;
 
-                sql.append(" SET ").append(columnName).append(" = ?");
+                if(!first) sql.append(",");
+                first = false;
+
+                sql.append(columnName).append(" = ?");
                 params.add(value);
             }
         }
