@@ -36,7 +36,7 @@ public class RouteDao {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
     }
 
-    public Route create(Route route) {
+    public Route save(Route route) {
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
