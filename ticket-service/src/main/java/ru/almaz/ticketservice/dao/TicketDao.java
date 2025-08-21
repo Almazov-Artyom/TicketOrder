@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.dao.builder.SqlTicketFilterBuilder;
 import ru.almaz.ticketservice.dto.TicketFilter;
@@ -13,6 +15,8 @@ import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.mapper.TicketRowMapper;
 
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,12 @@ public class TicketDao {
                 WHERE id = ?
             """;
 
+    private static final String SAVE_SQL = """
+                INSERT INTO ticket (route_id, departure_time, seat_number, price, status)
+                VALUES (?, ?, ?, ?, ?)
+                RETURNING id
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -74,6 +84,23 @@ public class TicketDao {
 
     public void updateTicketStatus(Long ticketId) {
         jdbcTemplate.update(UPDATE_TICKET_STATUS_SQL, ticketId);
+    }
+
+    public Ticket save(Ticket ticket) {
+        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(SAVE_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, ticket.getRoute().getId());
+            ps.setTimestamp(2, Timestamp.valueOf(ticket.getDepartureTime()));
+            ps.setString(3, ticket.getSeatNumber());
+            ps.setBigDecimal(4, ticket.getPrice());
+            ps.setString(5, ticket.getStatus().name());
+            return ps;
+        }, generatedKeyHolder);
+
+        ticket.setId((Long) generatedKeyHolder.getKey());
+        return ticket;
     }
 }
 
