@@ -43,6 +43,14 @@ public class RouteDao {
             RETURNING id;
             """;
 
+    private static final String EXIST_ROUTE_SQL= """
+                SELECT EXISTS(
+                    SELECT *
+                    FROM route
+                    WHERE id = ?
+                )
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -72,5 +80,10 @@ public class RouteDao {
         params.add(routeId);
 
         return jdbcTemplate.queryForObject(sql, routeRowMapper, params.toArray());
+    }
+
+    public boolean existRoute(Long routeId) {
+        Boolean exists = jdbcTemplate.queryForObject(EXIST_ROUTE_SQL, Boolean.class, routeId);
+        return Boolean.TRUE.equals(exists);
     }
 }
