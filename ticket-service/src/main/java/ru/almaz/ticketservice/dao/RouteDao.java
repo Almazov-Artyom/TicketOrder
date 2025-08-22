@@ -5,14 +5,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.almaz.ticketservice.dao.builder.SqlParamsBuilder;
+import ru.almaz.ticketservice.dao.builder.UpdateRouteSqlParamsBuilder;
+import ru.almaz.ticketservice.dto.UpdateCarrierDto;
+import ru.almaz.ticketservice.dto.UpdateRouteRequest;
+import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
+import ru.almaz.ticketservice.mapper.RouteRowMapper;
 
 import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class RouteDao {
     private final JdbcTemplate jdbcTemplate;
+
+    private final SqlParamsBuilder<UpdateRouteRequest> sqlParamsBuilder;
+
+    private final RouteRowMapper routeRowMapper;
 
     private static final String CREATE_TABLE_SQL = """
                 CREATE TABLE IF NOT EXISTS route (
@@ -40,16 +52,25 @@ public class RouteDao {
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(SAVE_SQL,PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(SAVE_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, route.getOrigin());
             ps.setString(2, route.getDestination());
             ps.setLong(3, route.getCarrier().getId());
             ps.setInt(4, (int) route.getDuration().toMinutes());
             return ps;
-        },generatedKeyHolder);
+        }, generatedKeyHolder);
 
         route.setId((Long) generatedKeyHolder.getKey());
 
         return route;
+    }
+
+    public Route updateRoute(Long routeId, UpdateRouteRequest updateRouteRequest) {
+        Map.Entry<String, List<Object>> sqlAndParams = sqlParamsBuilder.buildSqlAndParams(updateRouteRequest);
+        String sql = sqlAndParams.getKey() + " WHERE id = ? RETURNING id, origin, destination, carrier_id, duration";
+        List<Object> params = sqlAndParams.getValue();
+        params.add(routeId);
+
+        return jdbcTemplate.queryForObject(sql, routeRowMapper, params.toArray());
     }
 }
