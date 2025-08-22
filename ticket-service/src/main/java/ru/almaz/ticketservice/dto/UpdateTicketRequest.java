@@ -25,6 +25,6 @@ public record UpdateTicketRequest(
 
         BigDecimal price,
 
-        TicketStatus status
+        String status
 ) {
 }

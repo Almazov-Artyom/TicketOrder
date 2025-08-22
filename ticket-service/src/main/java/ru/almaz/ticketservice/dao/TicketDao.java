@@ -7,8 +7,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.dao.builder.SqlParamsBuilder;
+import ru.almaz.ticketservice.dao.builder.UpdateTicketSqlParamsBuilder;
 import ru.almaz.ticketservice.dto.TicketFilter;
+import ru.almaz.ticketservice.dto.UpdateTicketRequest;
 import ru.almaz.ticketservice.entity.Ticket;
+import ru.almaz.ticketservice.enums.TicketStatus;
+import ru.almaz.ticketservice.mapper.SimpleTicketRowMapper;
 import ru.almaz.ticketservice.mapper.TicketRowMapper;
 
 import java.sql.PreparedStatement;
@@ -24,6 +28,10 @@ public class TicketDao {
     private final SqlParamsBuilder<TicketFilter> sqlTicketFilterBuilder;
 
     private final TicketRowMapper ticketRowMapper;
+
+    private final SqlParamsBuilder<UpdateTicketRequest> SqlParamsBuilder;
+
+    private final SimpleTicketRowMapper simpleTicketRowMapper;
 
     private static final String CREATE_TABLE_SQL = """
                 CREATE TABLE IF NOT EXISTS ticket (
@@ -60,6 +68,8 @@ public class TicketDao {
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
+        UpdateTicketRequest updateTicketRequest = new UpdateTicketRequest(null, null, null, null, TicketStatus.AVAILABLE.name());
+        updateTicket(4L,updateTicketRequest);
     }
 
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
@@ -95,6 +105,15 @@ public class TicketDao {
 
         ticket.setId((Long) generatedKeyHolder.getKey());
         return ticket;
+    }
+
+    public Ticket updateTicket(Long ticketId, UpdateTicketRequest updateTicketRequest) {
+        Map.Entry<String, List<Object>> sqlAndParams = SqlParamsBuilder.buildSqlAndParams(updateTicketRequest);
+        String sql = sqlAndParams.getKey() + " WHERE id = ? RETURNING id, route_id, departure_time, seat_number, price, status";
+        List<Object> params = sqlAndParams.getValue();
+        params.add(ticketId);
+
+        return jdbcTemplate.queryForObject(sql, simpleTicketRowMapper, params.toArray());
     }
 }
 
