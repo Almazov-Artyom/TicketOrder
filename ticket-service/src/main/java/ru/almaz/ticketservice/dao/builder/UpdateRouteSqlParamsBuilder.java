@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
 import ru.almaz.ticketservice.dto.UpdateCarrierDto;
+import ru.almaz.ticketservice.dto.UpdateRouteRequest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -12,14 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UpdateCarrierSqlParamsBuilder extends AbstractUpdateSqlParamsBuilder<UpdateCarrierDto> {
+public class UpdateRouteSqlParamsBuilder
+        extends AbstractUpdateSqlParamsBuilder<UpdateRouteRequest> {
 
-    public UpdateCarrierSqlParamsBuilder() {
-        super(UpdateCarrierDto.class);
+    public UpdateRouteSqlParamsBuilder() {
+        super(UpdateRouteRequest.class);
     }
 
     @Override
     protected String getTableName() {
-        return "carrier";
+        return "route";
     }
 }

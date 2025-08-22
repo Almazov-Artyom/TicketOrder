@@ -8,17 +8,14 @@ import ru.almaz.ticketservice.annotation.ColumnMapping;
 import java.time.Duration;
 
 public record UpdateRouteRequest(
-        @ColumnMapping("origin")
         String origin,
 
-        @ColumnMapping("destination")
         String destination,
 
         @ColumnMapping("carrier_id")
         @JsonProperty("carrier_id")
         Long carrierId,
 
-        @ColumnMapping("duration")
         Duration duration
 ) {
 }

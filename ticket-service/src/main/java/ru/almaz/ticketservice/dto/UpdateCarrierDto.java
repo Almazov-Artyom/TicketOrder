@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
 
 public record UpdateCarrierDto (
-        @ColumnMapping("name")
         String name,
 
         @JsonProperty("phone_number")
