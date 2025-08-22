@@ -6,9 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.dao.builder.SqlParamsBuilder;
-import ru.almaz.ticketservice.dto.UpdateCarrierDto;
+import ru.almaz.ticketservice.dto.carrier.UpdateCarrierDto;
 import ru.almaz.ticketservice.entity.Carrier;
-import ru.almaz.ticketservice.mapper.CarrierRowMapper;
+import ru.almaz.ticketservice.mapper.row.CarrierRowMapper;
 
 import java.sql.PreparedStatement;
 import java.util.List;

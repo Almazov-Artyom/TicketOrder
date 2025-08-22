@@ -7,13 +7,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.dao.builder.SqlParamsBuilder;
-import ru.almaz.ticketservice.dao.builder.UpdateTicketSqlParamsBuilder;
-import ru.almaz.ticketservice.dto.TicketFilter;
-import ru.almaz.ticketservice.dto.UpdateTicketRequest;
+import ru.almaz.ticketservice.dto.ticket.TicketFilter;
+import ru.almaz.ticketservice.dto.ticket.UpdateTicketRequest;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
-import ru.almaz.ticketservice.mapper.SimpleTicketRowMapper;
-import ru.almaz.ticketservice.mapper.TicketRowMapper;
+import ru.almaz.ticketservice.mapper.row.SimpleTicketRowMapper;
+import ru.almaz.ticketservice.mapper.row.TicketRowMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.almaz.ticketservice.dao.UserTicketDao;
-import ru.almaz.ticketservice.dto.TicketDto;
+import ru.almaz.ticketservice.dto.ticket.TicketDto;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.mapper.TicketMapper;
 

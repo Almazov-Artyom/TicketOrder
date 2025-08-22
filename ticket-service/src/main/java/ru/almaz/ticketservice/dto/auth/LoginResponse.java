@@ -1,6 +1,4 @@
-package ru.almaz.ticketservice.dto;
-
-import jakarta.validation.constraints.NotBlank;
+package ru.almaz.ticketservice.dto.auth;
 
 public record LoginResponse(
         String accessToken,

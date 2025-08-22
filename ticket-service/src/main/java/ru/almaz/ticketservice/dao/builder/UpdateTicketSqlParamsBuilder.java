@@ -1,7 +1,7 @@
 package ru.almaz.ticketservice.dao.builder;
 
 import org.springframework.stereotype.Component;
-import ru.almaz.ticketservice.dto.UpdateTicketRequest;
+import ru.almaz.ticketservice.dto.ticket.UpdateTicketRequest;
 
 @Component
 public class UpdateTicketSqlParamsBuilder

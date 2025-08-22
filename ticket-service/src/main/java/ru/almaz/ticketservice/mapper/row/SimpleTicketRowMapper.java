@@ -1,4 +1,4 @@
-package ru.almaz.ticketservice.mapper;
+package ru.almaz.ticketservice.mapper.row;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

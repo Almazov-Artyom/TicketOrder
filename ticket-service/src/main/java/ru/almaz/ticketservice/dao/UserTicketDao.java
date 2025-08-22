@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.entity.Ticket;
-import ru.almaz.ticketservice.mapper.TicketRowMapper;
+import ru.almaz.ticketservice.mapper.row.TicketRowMapper;
 
 import java.util.List;
 

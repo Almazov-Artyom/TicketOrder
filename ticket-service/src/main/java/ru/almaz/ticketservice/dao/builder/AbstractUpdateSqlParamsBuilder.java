@@ -2,7 +2,7 @@ package ru.almaz.ticketservice.dao.builder;
 
 import lombok.SneakyThrows;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
-import ru.almaz.ticketservice.dto.UpdateCarrierDto;
+import ru.almaz.ticketservice.dto.carrier.UpdateCarrierDto;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

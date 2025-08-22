@@ -3,10 +3,10 @@ package ru.almaz.ticketservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.almaz.ticketservice.dto.TicketDto;
-import ru.almaz.ticketservice.dto.TicketFilter;
-import ru.almaz.ticketservice.dto.AddTicketRequest;
-import ru.almaz.ticketservice.dto.TicketResponse;
+import ru.almaz.ticketservice.dto.ticket.TicketDto;
+import ru.almaz.ticketservice.dto.ticket.TicketFilter;
+import ru.almaz.ticketservice.dto.ticket.AddTicketRequest;
+import ru.almaz.ticketservice.dto.ticket.TicketResponse;
 import ru.almaz.ticketservice.service.TicketService;
 
 import java.util.List;

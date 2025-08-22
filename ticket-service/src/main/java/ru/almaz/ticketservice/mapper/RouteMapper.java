@@ -1,8 +1,8 @@
 package ru.almaz.ticketservice.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.almaz.ticketservice.dto.RouteDto;
-import ru.almaz.ticketservice.dto.AddRouteRequest;
+import ru.almaz.ticketservice.dto.route.RouteDto;
+import ru.almaz.ticketservice.dto.route.AddRouteRequest;
 import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
 

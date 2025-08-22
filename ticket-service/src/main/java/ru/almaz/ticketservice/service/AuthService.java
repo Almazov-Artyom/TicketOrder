@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.almaz.ticketservice.dto.*;
+import ru.almaz.ticketservice.dto.auth.*;
 import ru.almaz.ticketservice.entity.User;
 import ru.almaz.ticketservice.enums.Role;
 import ru.almaz.ticketservice.exception.UserUnauthenticatedException;

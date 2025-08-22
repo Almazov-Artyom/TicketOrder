@@ -1,4 +1,4 @@
-package ru.almaz.ticketservice.dto;
+package ru.almaz.ticketservice.dto.ticket;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

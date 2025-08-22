@@ -1,7 +1,7 @@
 package ru.almaz.ticketservice.validator;
 
 import org.springframework.stereotype.Component;
-import ru.almaz.ticketservice.dto.TicketFilter;
+import ru.almaz.ticketservice.dto.ticket.TicketFilter;
 import ru.almaz.ticketservice.exception.InvalidDepartureTimeException;
 
 import java.sql.Timestamp;

@@ -3,7 +3,7 @@ package ru.almaz.ticketservice.dao.builder;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
-import ru.almaz.ticketservice.dto.TicketFilter;
+import ru.almaz.ticketservice.dto.ticket.TicketFilter;
 
 import java.lang.reflect.Field;
 import java.util.*;

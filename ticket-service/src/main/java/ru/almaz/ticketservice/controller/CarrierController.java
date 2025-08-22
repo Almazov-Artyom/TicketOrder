@@ -3,9 +3,9 @@ package ru.almaz.ticketservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.almaz.ticketservice.dto.CarrierDto;
-import ru.almaz.ticketservice.dto.AddCarrierRequest;
-import ru.almaz.ticketservice.dto.UpdateCarrierDto;
+import ru.almaz.ticketservice.dto.carrier.CarrierDto;
+import ru.almaz.ticketservice.dto.carrier.AddCarrierRequest;
+import ru.almaz.ticketservice.dto.carrier.UpdateCarrierDto;
 import ru.almaz.ticketservice.service.CarrierService;
 
 @RestController
