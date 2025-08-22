@@ -38,6 +38,14 @@ public class CarrierDao {
                 RETURNING id
             """;
 
+    private static final String EXIST_CARRIER_SQL= """
+                SELECT EXISTS(
+                    SELECT *
+                    FROM carrier
+                    WHERE id = ?
+                )
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -68,4 +76,10 @@ public class CarrierDao {
 
         return jdbcTemplate.queryForObject(sql, carrierRowMapper, params.toArray());
     }
+
+    public boolean existCarrier(Long carrierId) {
+        Boolean exists = jdbcTemplate.queryForObject(EXIST_CARRIER_SQL, boolean.class, carrierId);
+        return Boolean.TRUE.equals(exists);
+    }
+
 }
