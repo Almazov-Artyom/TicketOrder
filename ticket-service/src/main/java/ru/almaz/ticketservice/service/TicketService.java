@@ -5,15 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.almaz.ticketservice.dao.TicketDao;
 import ru.almaz.ticketservice.dao.UserTicketDao;
-import ru.almaz.ticketservice.dto.ticket.TicketDto;
-import ru.almaz.ticketservice.dto.ticket.TicketFilter;
-import ru.almaz.ticketservice.dto.ticket.AddTicketRequest;
-import ru.almaz.ticketservice.dto.ticket.TicketResponse;
+import ru.almaz.ticketservice.dto.ticket.*;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.exception.TicketUnavailableException;
 import ru.almaz.ticketservice.mapper.TicketMapper;
-import ru.almaz.ticketservice.validator.TicketFilterValidator;
+import ru.almaz.ticketservice.validator.TicketValidator;
 
 import java.util.List;
 
@@ -22,13 +19,14 @@ import java.util.List;
 public class TicketService {
     private final TicketDao ticketDao;
 
-    private final TicketFilterValidator ticketFilterValidator;
+    private final TicketValidator ticketFilterValidator;
 
     private final UserService userService;
 
     private final UserTicketDao userTicketDao;
 
     private final TicketMapper ticketMapper;
+    private final TicketValidator ticketValidator;
 
     @Transactional
     public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
@@ -59,6 +57,13 @@ public class TicketService {
         Ticket ticket = ticketMapper.toTicket(ticketRequest);
         ticket.setStatus(TicketStatus.AVAILABLE);
         ticketDao.save(ticket);
+        return ticketMapper.toTicketResponse(ticket);
+    }
+
+    @Transactional
+    public TicketResponse updateTicket(Long ticketId, UpdateTicketRequest ticketRequest) {
+        ticketValidator.isTickedValid(ticketId);
+        Ticket ticket = ticketDao.updateTicket(ticketId, ticketRequest);
         return ticketMapper.toTicketResponse(ticket);
     }
 }

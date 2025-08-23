@@ -64,6 +64,14 @@ public class TicketDao {
                 RETURNING id
             """;
 
+    private static final String EXIST_TICKET_SQL= """
+                SELECT EXISTS(
+                    SELECT *
+                    FROM ticket
+                    WHERE id = ?
+                )
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -111,8 +119,13 @@ public class TicketDao {
         String sql = sqlAndParams.getKey() + " WHERE id = ? RETURNING id, route_id, departure_time, seat_number, price, status";
         List<Object> params = sqlAndParams.getValue();
         params.add(ticketId);
-
+        System.out.println(sql);
         return jdbcTemplate.queryForObject(sql, simpleTicketRowMapper, params.toArray());
+    }
+
+    public boolean existTicket(Long ticketId) {
+        Boolean exists = jdbcTemplate.queryForObject(EXIST_TICKET_SQL, Boolean.class, ticketId);
+        return Boolean.TRUE.equals(exists);
     }
 }
 
