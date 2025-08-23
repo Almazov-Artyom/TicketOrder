@@ -9,6 +9,7 @@ import ru.almaz.ticketservice.dto.route.AddRouteRequest;
 import ru.almaz.ticketservice.dto.route.UpdateRouteRequest;
 import ru.almaz.ticketservice.entity.Route;
 import ru.almaz.ticketservice.mapper.RouteMapper;
+import ru.almaz.ticketservice.validator.CarrierValidator;
 import ru.almaz.ticketservice.validator.RouteValidator;
 
 @Service
@@ -21,17 +22,27 @@ public class RouteService {
 
     private final RouteValidator routeValidator;
 
+    private final CarrierValidator carrierValidator;
+
     @Transactional
     public RouteDto saveRoute(AddRouteRequest routeRequest) {
+        carrierValidator.isCarrierValid(routeRequest.carrierId());
+
         Route route = routeMapper.toRoute(routeRequest);
+
         routeDao.save(route);
+
         return routeMapper.toRouteDto(route);
     }
 
     @Transactional
     public RouteDto updateRoute(Long routeId, UpdateRouteRequest routeRequest) {
         routeValidator.isRouteValid(routeId);
+
+        carrierValidator.isCarrierValid(routeRequest.carrierId());
+
         Route route = routeDao.updateRoute(routeId, routeRequest);
+
         return routeMapper.toRouteDto(route);
     }
 
