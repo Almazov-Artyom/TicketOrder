@@ -1,5 +1,6 @@
 package ru.almaz.ticketservice.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,6 +88,11 @@ public class AuthService {
         jwtCacheService.putRefreshToken(userId, newRefreshToken);
 
         return new RefreshTokenResponse(newAccessToken,newRefreshToken);
+    }
+
+    @PostConstruct
+    public void init() {
+        userService.createAdmin();
     }
 
 }

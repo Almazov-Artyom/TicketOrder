@@ -25,11 +25,11 @@ public class UserDao {
     private static final String CREATE_TABLE_SQL = """
                 CREATE TABLE IF NOT EXISTS users (
                     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    email varchar(255) NOT NULL,
+                    email varchar(255) NOT NULL UNIQUE,
                     password varchar(255) NOT NULL,
-                    last_name varchar(255) NOT NULL,
-                    first_name varchar(255) NOT NULL,
-                    middle_name varchar(255) NOT NULL,
+                    last_name varchar(255),
+                    first_name varchar(255),
+                    middle_name varchar(255),
                     role varchar(255) NOT NULL
                 )
             """;
