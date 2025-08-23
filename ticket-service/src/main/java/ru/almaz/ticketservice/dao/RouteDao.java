@@ -48,6 +48,11 @@ public class RouteDao {
                 )
             """;
 
+    private static final String DELETE_SQL= """
+                DELETE FROM route
+                WHERE id = ?
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -82,5 +87,9 @@ public class RouteDao {
     public boolean existRoute(Long routeId) {
         Boolean exists = jdbcTemplate.queryForObject(EXIST_ROUTE_SQL, Boolean.class, routeId);
         return Boolean.TRUE.equals(exists);
+    }
+
+    public void deleteRoute(Long routeId) {
+        jdbcTemplate.update(DELETE_SQL, routeId);
     }
 }
