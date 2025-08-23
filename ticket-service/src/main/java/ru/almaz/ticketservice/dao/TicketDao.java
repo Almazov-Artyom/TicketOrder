@@ -72,6 +72,11 @@ public class TicketDao {
                 )
             """;
 
+    private static final String DELETE_SQL= """
+                DELETE FROM ticket
+                WHERE id = ?
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
@@ -126,6 +131,10 @@ public class TicketDao {
     public boolean existTicket(Long ticketId) {
         Boolean exists = jdbcTemplate.queryForObject(EXIST_TICKET_SQL, Boolean.class, ticketId);
         return Boolean.TRUE.equals(exists);
+    }
+
+    public void deleteTicket(Long ticketId) {
+        jdbcTemplate.update(DELETE_SQL, ticketId);
     }
 }
 
