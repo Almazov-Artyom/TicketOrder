@@ -28,9 +28,16 @@ public class RouteService {
         return routeMapper.toRouteDto(route);
     }
 
+    @Transactional
     public RouteDto updateRoute(Long routeId, UpdateRouteRequest routeRequest) {
         routeValidator.isRouteValid(routeId);
         Route route = routeDao.updateRoute(routeId, routeRequest);
         return routeMapper.toRouteDto(route);
+    }
+
+    @Transactional
+    public void deleteRoute(Long routeId) {
+        routeValidator.isRouteValid(routeId);
+        routeDao.deleteRoute(routeId);
     }
 }

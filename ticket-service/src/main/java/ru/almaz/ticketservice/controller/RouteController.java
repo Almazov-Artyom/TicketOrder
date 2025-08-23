@@ -26,5 +26,9 @@ public class RouteController {
         return routeService.updateRoute(routeId, routeRequest);
     }
 
+    @DeleteMapping("/{routeId}")
+    public void deleteRoute(@PathVariable Long routeId) {
+        routeService.deleteRoute(routeId);
+    }
 
 }
