@@ -3,6 +3,7 @@ package ru.almaz.ticketservice.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -46,7 +47,11 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/ticket").permitAll()
+                        .requestMatchers("/carrier/**").hasAuthority("ADMIN")
+                        .requestMatchers("/route/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/ticket").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ticket/buy/**").hasAuthority("USER")
+                        .requestMatchers("/ticket/**").hasAuthority("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
