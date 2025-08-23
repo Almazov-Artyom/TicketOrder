@@ -66,4 +66,9 @@ public class TicketService {
         Ticket ticket = ticketDao.updateTicket(ticketId, ticketRequest);
         return ticketMapper.toTicketResponse(ticket);
     }
+
+    public void deleteTicket(Long ticketId) {
+        ticketValidator.isTickedValid(ticketId);
+        ticketDao.deleteTicket(ticketId);
+    }
 }

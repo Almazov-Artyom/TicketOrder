@@ -34,4 +34,9 @@ public class TicketController {
                                        @RequestBody @Valid UpdateTicketRequest ticketRequest) {
         return ticketService.updateTicket(ticketId, ticketRequest);
     }
+
+    @DeleteMapping("/{ticketId}")
+    public void deleteTicket(@PathVariable Long ticketId) {
+        ticketService.deleteTicket(ticketId);
+    }
 }
