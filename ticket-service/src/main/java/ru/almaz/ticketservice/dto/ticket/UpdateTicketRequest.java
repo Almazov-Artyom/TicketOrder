@@ -3,7 +3,9 @@ package ru.almaz.ticketservice.dto.ticket;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Positive;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
+import ru.almaz.ticketservice.annotation.EnumValid;
 import ru.almaz.ticketservice.annotation.NotBlankIfPresent;
+import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -28,6 +30,7 @@ public record UpdateTicketRequest(
         BigDecimal price,
 
         @NotBlankIfPresent(message = "Статус билета не может быть пустым")
+        @EnumValid(enumClass = TicketStatus.class, message = "Некорректный статус билета")
         String status
 ) {
 }
