@@ -46,11 +46,14 @@ public class CarrierDao {
                 )
             """;
 
+    private static final String DELETE_SQL= """
+                DELETE FROM carrier
+                WHERE id = ?
+            """;
+
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
-        UpdateCarrierDto transporter = new UpdateCarrierDto("Transporter", "79081562063");
-        updateCarrier(7L, transporter);
     }
 
     public Carrier save(Carrier carrier) {
@@ -80,6 +83,10 @@ public class CarrierDao {
     public boolean existCarrier(Long carrierId) {
         Boolean exists = jdbcTemplate.queryForObject(EXIST_CARRIER_SQL, boolean.class, carrierId);
         return Boolean.TRUE.equals(exists);
+    }
+
+    public void deleteCarrier(Long carrierId) {
+        jdbcTemplate.update(DELETE_SQL, carrierId);
     }
 
 }
