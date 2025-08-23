@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
+import ru.almaz.ticketservice.annotation.NotBlankIfPresent;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -31,13 +32,16 @@ public class TicketFilter{
         private Timestamp departureDateTime;
 
         @ColumnMapping("r.origin")
+        @NotBlankIfPresent(message = "Пункт отправления не может быть пустым")
         private String origin;
 
         @ColumnMapping("r.destination")
+        @NotBlankIfPresent(message = "Пункт назначения не может быть пустым")
         private String destination;
 
         @ColumnMapping("c.name")
         @JsonProperty("carrier_name")
+        @NotBlankIfPresent(message = "Название перевозчика не может быть пустым")
         private String carrierName;
 }
 
