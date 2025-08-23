@@ -3,6 +3,8 @@ package ru.almaz.ticketservice.dto.ticket;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
@@ -16,9 +18,11 @@ import java.time.LocalTime;
 @Setter
 public class TicketFilter{
         @NotNull(message = "limit не может быть пустым")
+        @Positive(message = "limit должен быть положительным")
         private Integer limit;
 
         @NotNull(message = "offset не может быть пустым")
+        @PositiveOrZero(message = "offset должен быть неотрицательный")
         private Integer offset;
 
         @JsonProperty("departure_date")
