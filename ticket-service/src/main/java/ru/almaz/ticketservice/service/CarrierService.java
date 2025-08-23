@@ -34,4 +34,10 @@ public class CarrierService {
         Carrier carrier = carrierDao.updateCarrier(carrierId, carrierRequest);
         return carrierMapper.toCarrierDto(carrier);
     }
+
+    @Transactional
+    public void deleteCarrier(Long carrierId) {
+        carrierValidator.isCarrierValid(carrierId);
+        carrierDao.deleteCarrier(carrierId);
+    }
 }

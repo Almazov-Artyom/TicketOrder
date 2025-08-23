@@ -25,4 +25,9 @@ public class CarrierController {
                                     @RequestBody @Valid UpdateCarrierDto updateCarrierDto) {
         return carrierService.updateCarrier(carrierId,updateCarrierDto);
     }
+
+    @DeleteMapping("/{carrierId}")
+    public void deleteCarrier(@PathVariable Long carrierId) {
+        carrierService.deleteCarrier(carrierId);
+    }
 }
