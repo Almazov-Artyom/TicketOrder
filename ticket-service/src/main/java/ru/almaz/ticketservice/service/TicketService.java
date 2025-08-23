@@ -10,6 +10,7 @@ import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.exception.TicketUnavailableException;
 import ru.almaz.ticketservice.mapper.TicketMapper;
+import ru.almaz.ticketservice.validator.RouteValidator;
 import ru.almaz.ticketservice.validator.TicketValidator;
 
 import java.util.List;
@@ -19,18 +20,19 @@ import java.util.List;
 public class TicketService {
     private final TicketDao ticketDao;
 
-    private final TicketValidator ticketFilterValidator;
-
     private final UserService userService;
 
     private final UserTicketDao userTicketDao;
 
     private final TicketMapper ticketMapper;
+
     private final TicketValidator ticketValidator;
+
+    private final RouteValidator routeValidator;
 
     @Transactional
     public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
-        ticketFilterValidator.dateValidation(ticketFilter);
+        ticketValidator.dateValidation(ticketFilter);
 
         List<Ticket> allAvailableTickets = ticketDao.findAllAvailableTickets(ticketFilter);
 
@@ -42,9 +44,8 @@ public class TicketService {
 
     @Transactional
     public void buyTicket(Long ticketId) {
-        if(!ticketDao.existTicketForPurchase(ticketId)) {
-            throw new TicketUnavailableException("Билет не доступен для покупки");
-        }
+        ticketValidator.isTicketForPurchaseValid(ticketId);
+
         Long userId = userService.getCurrentUserId();
 
         ticketDao.updateTicketStatus(ticketId);
@@ -54,19 +55,28 @@ public class TicketService {
 
     @Transactional
     public TicketResponse saveTicket(AddTicketRequest ticketRequest) {
+        routeValidator.isRouteValid(ticketRequest.routeId());
+
         Ticket ticket = ticketMapper.toTicket(ticketRequest);
         ticket.setStatus(TicketStatus.AVAILABLE);
+
         ticketDao.save(ticket);
+
         return ticketMapper.toTicketResponse(ticket);
     }
 
     @Transactional
     public TicketResponse updateTicket(Long ticketId, UpdateTicketRequest ticketRequest) {
         ticketValidator.isTickedValid(ticketId);
+
+        routeValidator.isRouteValid(ticketRequest.routeId());
+
         Ticket ticket = ticketDao.updateTicket(ticketId, ticketRequest);
+
         return ticketMapper.toTicketResponse(ticket);
     }
 
+    @Transactional
     public void deleteTicket(Long ticketId) {
         ticketValidator.isTickedValid(ticketId);
         ticketDao.deleteTicket(ticketId);
