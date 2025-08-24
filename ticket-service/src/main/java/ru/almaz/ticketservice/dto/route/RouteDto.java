@@ -15,6 +15,6 @@ public record RouteDto(
         @JsonProperty("carrier_id")
         Long carrierId,
 
-        Duration duration
+        Integer duration
 ) {
 }

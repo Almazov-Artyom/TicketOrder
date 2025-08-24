@@ -21,7 +21,7 @@ public class RouteRowMapper implements RowMapper<Route> {
         route.setOrigin(rs.getString("origin"));
         route.setDestination(rs.getString("destination"));
         route.setCarrier(carrier);
-        route.setDuration(Duration.ofMinutes(rs.getInt("duration")));
+        route.setDuration(rs.getInt("duration"));
 
         return route;
     }

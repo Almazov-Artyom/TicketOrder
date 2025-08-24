@@ -16,5 +16,5 @@ public class Route {
 
     private Carrier carrier;
 
-    private Duration duration;
+    private Integer duration;
 }

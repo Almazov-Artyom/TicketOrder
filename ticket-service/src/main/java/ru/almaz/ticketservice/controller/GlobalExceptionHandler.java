@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
             InvalidDepartureTimeException.class,
             TicketUnavailableException.class,
     })
-    public ProblemDetail handleUserAlreadyExistException(RuntimeException e) {
+    public ProblemDetail handleBadRequestException(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
@@ -45,5 +45,15 @@ public class GlobalExceptionHandler {
                 ex.getAllErrors().stream().map(ObjectError::getDefaultMessage).toList()
         );
         return response;
+    }
+
+    @ExceptionHandler({
+            CarrierNotFoundException.class,
+            RouteNotFoundException.class,
+            TicketNotFoundException.class,
+            UserNotFoundException.class,
+    })
+    public ProblemDetail handleNotFoundException(RuntimeException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }
 }

@@ -1,6 +1,8 @@
 package ru.almaz.ticketservice.dto.ticket;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,6 +18,8 @@ public record AddTicketRequest(
 
         @NotNull(message = "departure_time не может быть null")
         @JsonProperty("departure_time")
+        @JsonFormat(pattern = "dd.MM.yyyy H:mm")
+        @Future(message = "Дата не должны быть в прошлом")
         LocalDateTime departureTime,
 
         @NotBlank(message = "Номер места не может быть пустым")

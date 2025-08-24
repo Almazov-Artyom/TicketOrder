@@ -29,7 +29,7 @@ public class RouteMapper {
         String origin = route.getOrigin();
         String destination = route.getDestination();
         Long carrierId = route.getCarrier().getId();
-        Duration duration = route.getDuration();
+        Integer duration = route.getDuration();
 
         return new RouteDto(id, origin, destination, carrierId, duration);
     }

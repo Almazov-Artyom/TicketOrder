@@ -39,7 +39,8 @@ public class RouteService {
     public RouteDto updateRoute(Long routeId, UpdateRouteRequest routeRequest) {
         routeValidator.isRouteValid(routeId);
 
-        carrierValidator.isCarrierValid(routeRequest.carrierId());
+        if (routeRequest.carrierId() != null)
+            carrierValidator.isCarrierValid(routeRequest.carrierId());
 
         Route route = routeDao.updateRoute(routeId, routeRequest);
 

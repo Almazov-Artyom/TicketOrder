@@ -69,7 +69,8 @@ public class TicketService {
     public TicketResponse updateTicket(Long ticketId, UpdateTicketRequest ticketRequest) {
         ticketValidator.isTickedValid(ticketId);
 
-        routeValidator.isRouteValid(ticketRequest.routeId());
+        if (ticketRequest.routeId() != null)
+            routeValidator.isRouteValid(ticketRequest.routeId());
 
         Ticket ticket = ticketDao.updateTicket(ticketId, ticketRequest);
 

@@ -17,7 +17,7 @@ public class TicketMapper {
     public TicketDto toDto(Ticket ticket) {
         Route route = ticket.getRoute();
         Carrier carrier = route.getCarrier();
-        String duration = (route.getDuration().toMinutes()) + " min";
+        String duration = route.getDuration() + " min";
         return new TicketDto(
                 ticket.getId(), route.getOrigin(), route.getDestination(), carrier.getName(), duration,
                 ticket.getDepartureTime(), ticket.getSeatNumber(), ticket.getPrice()

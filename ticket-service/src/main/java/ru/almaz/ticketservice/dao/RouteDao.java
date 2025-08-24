@@ -66,7 +66,7 @@ public class RouteDao {
             ps.setString(1, route.getOrigin());
             ps.setString(2, route.getDestination());
             ps.setLong(3, route.getCarrier().getId());
-            ps.setInt(4, (int) route.getDuration().toMinutes());
+            ps.setInt(4, route.getDuration());
             return ps;
         }, generatedKeyHolder);
 

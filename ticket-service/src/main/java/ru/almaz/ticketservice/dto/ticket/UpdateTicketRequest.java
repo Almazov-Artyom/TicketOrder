@@ -1,5 +1,6 @@
 package ru.almaz.ticketservice.dto.ticket;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Positive;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
@@ -18,6 +19,7 @@ public record UpdateTicketRequest(
         Long routeId,
 
         @JsonProperty("departure_time")
+        @JsonFormat(pattern = "dd.MM.yyyy H:mm")
         @ColumnMapping("departure_time")
         LocalDateTime departureTime,
 

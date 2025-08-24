@@ -26,7 +26,7 @@ public class TicketRowMapper implements RowMapper<Ticket> {
         route.setOrigin(rs.getString("route_origin"));
         route.setDestination(rs.getString("route_destination"));
         route.setCarrier(carrier);
-        route.setDuration(Duration.ofMinutes(rs.getInt("route_duration")));
+        route.setDuration(rs.getInt("route_duration"));
 
         Ticket ticket = new Ticket();
         ticket.setId(rs.getLong("ticket_id"));

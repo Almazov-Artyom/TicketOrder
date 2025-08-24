@@ -23,6 +23,7 @@ public class RouteController {
     @PatchMapping("/{routeId}")
     public RouteDto updateRoute(@PathVariable Long routeId,
                                 @RequestBody @Valid UpdateRouteRequest routeRequest) {
+        System.out.println(routeRequest);
         return routeService.updateRoute(routeId, routeRequest);
     }
 
