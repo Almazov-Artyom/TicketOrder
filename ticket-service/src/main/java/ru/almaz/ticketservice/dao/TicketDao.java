@@ -40,7 +40,9 @@ public class TicketDao {
                     seat_number varchar(50) NOT NULL,
                     price NUMERIC(10,2) NOT NULL,
                     status varchar(50) NOT NULL CHECK ( status IN ('AVAILABLE','PURCHASED')),
-                    FOREIGN KEY (route_id) REFERENCES route(id) ON DELETE SET NULL
+                    user_id BIGINT,
+                    FOREIGN KEY (route_id) REFERENCES route(id) ON DELETE SET NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
                 )
             """;
 
@@ -54,8 +56,28 @@ public class TicketDao {
 
     private static final String UPDATE_TICKET_STATUS_SQL = """
                 UPDATE ticket
-                SET status = 'PURCHASED'
+                SET status = 'PURCHASED', user_id = ?
                 WHERE id = ?
+            """;
+
+    private static final String FIND_ALL_TICKETS_BY_USER_ID = """
+                SELECT
+                    t.id AS ticket_id,
+                    r.id AS route_id,
+                    r.origin AS route_origin,
+                    r.destination AS route_destination,
+                    c.id AS carrier_id,
+                    c.name AS carrier_name,
+                    c.phone_number AS carrier_phone_number,
+                    r.duration AS route_duration,
+                    t.departure_time AS ticket_departure_time,
+                    t.seat_number AS ticket_seat_number,
+                    t.price AS ticket_price,
+                    t.status AS ticket_status
+                FROM ticket AS t
+                JOIN route AS r ON t.route_id = r.id
+                JOIN carrier AS c ON r.carrier_id = c.id
+                WHERE t.user_id = ?
             """;
 
     private static final String SAVE_SQL = """
@@ -64,7 +86,7 @@ public class TicketDao {
                 RETURNING id
             """;
 
-    private static final String EXIST_TICKET_SQL= """
+    private static final String EXIST_TICKET_SQL = """
                 SELECT EXISTS(
                     SELECT *
                     FROM ticket
@@ -72,7 +94,7 @@ public class TicketDao {
                 )
             """;
 
-    private static final String DELETE_SQL= """
+    private static final String DELETE_SQL = """
                 DELETE FROM ticket
                 WHERE id = ?
             """;
@@ -80,8 +102,6 @@ public class TicketDao {
     @PostConstruct
     public void init() {
         jdbcTemplate.execute(CREATE_TABLE_SQL);
-        UpdateTicketRequest updateTicketRequest = new UpdateTicketRequest(null, null, null, null, TicketStatus.AVAILABLE.name());
-        updateTicket(4L,updateTicketRequest);
     }
 
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
@@ -98,8 +118,12 @@ public class TicketDao {
         return Boolean.TRUE.equals(exists);
     }
 
-    public void updateTicketStatus(Long ticketId) {
-        jdbcTemplate.update(UPDATE_TICKET_STATUS_SQL, ticketId);
+    public void updateTicketStatusAndUserId(Long userId, Long ticketId) {
+        jdbcTemplate.update(UPDATE_TICKET_STATUS_SQL, userId, ticketId);
+    }
+
+    public List<Ticket> findAllTicketsByUserId(Long userId) {
+        return jdbcTemplate.query(FIND_ALL_TICKETS_BY_USER_ID, ticketRowMapper, userId);
     }
 
     public Ticket save(Ticket ticket) {

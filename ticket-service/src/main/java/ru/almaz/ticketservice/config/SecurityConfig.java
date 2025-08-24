@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/route/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/ticket").permitAll()
                         .requestMatchers(HttpMethod.POST, "/ticket/buy/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/ticket/purchased").hasAuthority("USER")
                         .requestMatchers("/ticket/**").hasAuthority("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()

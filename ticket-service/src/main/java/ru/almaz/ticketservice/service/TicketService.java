@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.almaz.ticketservice.dao.TicketDao;
-import ru.almaz.ticketservice.dao.UserTicketDao;
 import ru.almaz.ticketservice.dto.ticket.*;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
-import ru.almaz.ticketservice.exception.TicketUnavailableException;
 import ru.almaz.ticketservice.mapper.TicketMapper;
 import ru.almaz.ticketservice.validator.RouteValidator;
 import ru.almaz.ticketservice.validator.TicketValidator;
@@ -21,8 +19,6 @@ public class TicketService {
     private final TicketDao ticketDao;
 
     private final UserService userService;
-
-    private final UserTicketDao userTicketDao;
 
     private final TicketMapper ticketMapper;
 
@@ -48,9 +44,20 @@ public class TicketService {
 
         Long userId = userService.getCurrentUserId();
 
-        ticketDao.updateTicketStatus(ticketId);
+        ticketDao.updateTicketStatusAndUserId(userId, ticketId);
+    }
 
-        userTicketDao.save(userId, ticketId);
+    @Transactional
+    public List<TicketDto> getAllTicketsByUser() {
+        Long userId = userService.getCurrentUserId();
+
+        List<Ticket> allTicketsByUserId = ticketDao.findAllTicketsByUserId(userId);
+
+        return allTicketsByUserId
+                .stream()
+                .map(ticketMapper::toDto)
+                .toList();
+
     }
 
     @Transactional

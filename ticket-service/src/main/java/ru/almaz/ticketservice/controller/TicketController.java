@@ -24,6 +24,11 @@ public class TicketController {
         ticketService.buyTicket(ticketId);
     }
 
+    @GetMapping("/purchased")
+    public List<TicketDto> getPurchasedTickets() {
+        return ticketService.getAllTicketsByUser();
+    }
+
     @PostMapping
     public TicketResponse addTicket(@RequestBody @Valid AddTicketRequest ticketRequest) {
         return ticketService.saveTicket(ticketRequest);

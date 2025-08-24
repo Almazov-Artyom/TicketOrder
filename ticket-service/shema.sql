@@ -1,18 +1,23 @@
-SELECT
-    t.id AS ticket_id,
-    r.id AS route_id,
-    r.origin AS route_origin,
-    r.destination AS route_destination,
-    c.id AS carrier_id,
-    c.name AS carrier_name,
-    c.phone_number AS carrier_phone_number,
-    r.duration AS route_duration,
-    t.departure_time AS ticket_departure_time,
-    t.seat_number AS ticket_seat_number,
-    t.price AS ticket_price,
-    t.status AS ticket_status
-FROM ticket AS t
-         JOIN route AS r ON t.route_id = r.id
-         JOIN carrier AS c ON r.carrier_id = c.id
-WHERE 1=1
-  AND t.status='AVAILABLE' ORDER BY t.departure_time LIMIT 2 OFFSET 0
+INSERT INTO ticket (route_id, departure_time, seat_number, price, status)
+VALUES
+    (1, '2025-10-12 08:30:00', 1, 1200.00, 'AVAILABLE'),
+    (1, '2025-10-12 08:30:00', 2, 1200.00, 'AVAILABLE'),
+    (1, '2025-10-12 08:30:00', 3, 1200.00, 'AVAILABLE');
+
+INSERT INTO ticket (route_id, departure_time, seat_number, price, status)
+VALUES
+    (2, '2025-10-15 09:00:00', 1, 1500.00, 'AVAILABLE'),
+    (2, '2025-10-15 09:00:00', 2, 1500.00, 'AVAILABLE'),
+    (2, '2025-10-15 09:00:00', 3, 1500.00, 'AVAILABLE');
+
+INSERT INTO ticket (route_id, departure_time, seat_number, price, status)
+VALUES
+    (3, '2025-10-20 12:15:00', 1, 1800.00, 'AVAILABLE'),
+    (3, '2025-10-20 12:15:00', 2, 1800.00, 'AVAILABLE'),
+    (3, '2025-10-20 12:15:00', 3, 1800.00, 'AVAILABLE');
+
+INSERT INTO ticket (route_id, departure_time, seat_number, price, status)
+VALUES
+    (4, '2025-10-25 19:45:00', 1, 2000.00, 'AVAILABLE'),
+    (4, '2025-10-25 19:45:00', 2, 2000.00, 'AVAILABLE'),
+    (4, '2025-10-25 19:45:00', 3, 2000.00, 'AVAILABLE');
