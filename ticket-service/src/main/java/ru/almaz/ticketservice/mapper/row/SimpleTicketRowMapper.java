@@ -19,7 +19,7 @@ public class SimpleTicketRowMapper implements RowMapper<Ticket> {
         Ticket ticket = new Ticket();
         ticket.setId(rs.getLong("id"));
         ticket.setRoute(route);
-        ticket.setDepartureTime(rs.getTimestamp("departure_time").toLocalDateTime());
+        ticket.setDepartureTime(rs.getTimestamp("departure_time"));
         ticket.setSeatNumber(rs.getString("seat_number"));
         ticket.setPrice(rs.getBigDecimal("price"));
         ticket.setStatus(TicketStatus.valueOf(rs.getString("status")));

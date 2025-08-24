@@ -31,7 +31,7 @@ public class TicketRowMapper implements RowMapper<Ticket> {
         Ticket ticket = new Ticket();
         ticket.setId(rs.getLong("ticket_id"));
         ticket.setRoute(route);
-        ticket.setDepartureTime(rs.getTimestamp("ticket_departure_time").toLocalDateTime());
+        ticket.setDepartureTime(rs.getTimestamp("ticket_departure_time"));
         ticket.setSeatNumber(rs.getString("ticket_seat_number"));
         ticket.setPrice(rs.getBigDecimal("ticket_price"));
         ticket.setStatus(TicketStatus.valueOf(rs.getString("ticket_status")));

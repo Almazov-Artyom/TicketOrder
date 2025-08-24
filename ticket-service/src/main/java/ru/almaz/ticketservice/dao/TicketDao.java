@@ -133,7 +133,7 @@ public class TicketDao {
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(SAVE_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setLong(1, ticket.getRoute().getId());
-            ps.setTimestamp(2, Timestamp.valueOf(ticket.getDepartureTime()));
+            ps.setTimestamp(2, ticket.getDepartureTime());
             ps.setString(3, ticket.getSeatNumber());
             ps.setBigDecimal(4, ticket.getPrice());
             ps.setString(5, ticket.getStatus().name());

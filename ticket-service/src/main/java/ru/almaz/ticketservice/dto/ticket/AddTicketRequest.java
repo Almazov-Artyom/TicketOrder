@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public record AddTicketRequest(
@@ -20,7 +21,7 @@ public record AddTicketRequest(
         @JsonProperty("departure_time")
         @JsonFormat(pattern = "dd.MM.yyyy H:mm")
         @Future(message = "Дата не должны быть в прошлом")
-        LocalDateTime departureTime,
+        Timestamp departureTime,
 
         @NotBlank(message = "Номер места не может быть пустым")
         @JsonProperty("seat_number")

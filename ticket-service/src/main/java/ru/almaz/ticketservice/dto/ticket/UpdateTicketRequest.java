@@ -11,6 +11,7 @@ import ru.almaz.ticketservice.enums.TicketStatus;
 import ru.almaz.ticketservice.util.UppercaseDeserializer;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public record UpdateTicketRequest(
@@ -23,7 +24,7 @@ public record UpdateTicketRequest(
         @JsonProperty("departure_time")
         @JsonFormat(pattern = "dd.MM.yyyy H:mm")
         @ColumnMapping("departure_time")
-        LocalDateTime departureTime,
+        Timestamp departureTime,
 
         @JsonProperty("seat_number")
         @ColumnMapping("seat_number")

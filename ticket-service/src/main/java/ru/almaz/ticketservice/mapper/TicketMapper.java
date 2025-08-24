@@ -10,6 +10,7 @@ import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Component
@@ -40,7 +41,7 @@ public class TicketMapper {
     public TicketResponse toTicketResponse(Ticket ticket) {
         Long ticketId = ticket.getId();
         Long routeId = ticket.getRoute().getId();
-        LocalDateTime departureTime = ticket.getDepartureTime();
+        Timestamp departureTime = ticket.getDepartureTime();
         String seatNumber = ticket.getSeatNumber();
         BigDecimal price = ticket.getPrice();
         TicketStatus status = ticket.getStatus();

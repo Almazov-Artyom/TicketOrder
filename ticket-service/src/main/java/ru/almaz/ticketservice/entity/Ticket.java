@@ -5,7 +5,7 @@ import lombok.Setter;
 import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,7 +14,7 @@ public class Ticket {
 
     private Route route;
 
-    private LocalDateTime departureTime;
+    private Timestamp departureTime;
 
     private String seatNumber;
 
