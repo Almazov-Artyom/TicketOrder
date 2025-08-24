@@ -1,5 +1,6 @@
 package ru.almaz.ticketservice.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -7,8 +8,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import ru.almaz.ticketservice.entity.Ticket;
 
 import java.time.Duration;
+import java.util.List;
 
 @Configuration
 @EnableCaching
@@ -18,6 +26,9 @@ public class RedisConfig {
 
     @Value("${cache.refresh-token.name}")
     private String refreshTokenCacheName;
+
+    @Value("${cache.ticket.name}")
+    private String ticketCacheName;
 
     @Value("${spring.access.jwt.ttl}")
     private Duration accessTokenTtl;
@@ -41,5 +52,14 @@ public class RedisConfig {
                                 .entryTtl(refreshTokenTtl)
                 )
                 .build();
+    }
+
+    @Bean
+    public RedisTemplate<String, Ticket> ticketRedisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Ticket> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
     }
 }
