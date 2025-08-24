@@ -23,7 +23,7 @@ public class TicketCacheService {
     @Value("${cache.ticket.name}")
     private String ticketCacheName;
 
-    private final RedisTemplate<String,Ticket> redisTemplate;
+    private final RedisTemplate<String, Ticket> redisTemplate;
 
     private String createKey(Long userId) {
         return ticketCacheName + ":" + userId;
@@ -33,6 +33,14 @@ public class TicketCacheService {
         String key = createKey(userId);
         redisTemplate.opsForList().rightPush(key, ticket);
 
+    }
+
+    public void putTickets(Long userId, List<Ticket> tickets) {
+        if (tickets == null || tickets.isEmpty()) return;
+
+        String key = createKey(userId);
+
+        redisTemplate.opsForList().rightPushAll(key, tickets);
     }
 
     public List<Ticket> getPurchasedTickets(Long userId) {

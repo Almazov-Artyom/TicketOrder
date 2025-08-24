@@ -3,6 +3,8 @@ package ru.almaz.ticketservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ru.almaz.ticketservice.dao.TicketDao;
 import ru.almaz.ticketservice.dto.ticket.*;
 import ru.almaz.ticketservice.entity.Ticket;
@@ -26,7 +28,9 @@ public class TicketService {
 
     private final RouteValidator routeValidator;
 
-    @Transactional
+    private final TicketCacheService ticketCacheService;
+
+    @Transactional(readOnly = true)
     public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
         ticketValidator.dateValidation(ticketFilter);
 
@@ -38,22 +42,35 @@ public class TicketService {
                 .toList();
     }
 
-    @Transactional
+    @Transactional()
     public void buyTicket(Long ticketId) {
         ticketValidator.isTicketForPurchaseValid(ticketId);
 
         Long userId = userService.getCurrentUserId();
 
-        ticketDao.updateTicketStatusAndUserId(userId, ticketId);
+        Ticket ticket = ticketDao.updateTicketStatusAndUserId(userId, ticketId);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                ticketCacheService.putTicket(userId, ticket);
+            }
+        });
+
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<TicketDto> getAllTicketsByUser() {
         Long userId = userService.getCurrentUserId();
 
-        List<Ticket> allTicketsByUserId = ticketDao.findAllTicketsByUserId(userId);
+        List<Ticket> purchasedTickets = ticketCacheService.getPurchasedTickets(userId);
 
-        return allTicketsByUserId
+        if(purchasedTickets.isEmpty()) {
+            purchasedTickets = ticketDao.findAllTicketsByUserId(userId);
+            ticketCacheService.putTickets(userId, purchasedTickets);
+        }
+
+        return purchasedTickets
                 .stream()
                 .map(ticketMapper::toDto)
                 .toList();

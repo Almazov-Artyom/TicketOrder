@@ -40,10 +40,29 @@ public class TicketDao {
                 )
             """;
 
-    private static final String UPDATE_TICKET_STATUS_SQL = """
-                UPDATE ticket
-                SET status = 'PURCHASED', user_id = ?
-                WHERE id = ?
+    private static final String UPDATE_TICKET_STATUS_AND_USER_ID_SQL = """
+                WITH updated AS (
+                    UPDATE ticket
+                    SET status = 'PURCHASED', user_id = ?
+                    WHERE id = ?
+                    RETURNING id, route_id, departure_time,seat_number, price, status
+                )
+                SELECT
+                    t.id AS ticket_id,
+                    r.id AS route_id,
+                    r.origin AS route_origin,
+                    r.destination AS route_destination,
+                    c.id AS carrier_id,
+                    c.name AS carrier_name,
+                    c.phone_number AS carrier_phone_number,
+                    r.duration AS route_duration,
+                    t.departure_time AS ticket_departure_time,
+                    t.seat_number AS ticket_seat_number,
+                    t.price AS ticket_price,
+                    t.status AS ticket_status
+                FROM updated as t
+                JOIN route as r ON r.id = t.route_id
+                JOIN carrier as c ON c.id = r.carrier_id
             """;
 
     private static final String FIND_ALL_TICKETS_BY_USER_ID = """
@@ -99,8 +118,9 @@ public class TicketDao {
         return Boolean.TRUE.equals(exists);
     }
 
-    public void updateTicketStatusAndUserId(Long userId, Long ticketId) {
-        jdbcTemplate.update(UPDATE_TICKET_STATUS_SQL, userId, ticketId);
+    public Ticket updateTicketStatusAndUserId(Long userId, Long ticketId) {
+        return jdbcTemplate.queryForObject
+                (UPDATE_TICKET_STATUS_AND_USER_ID_SQL,ticketRowMapper, userId, ticketId);
     }
 
     public List<Ticket> findAllTicketsByUserId(Long userId) {
