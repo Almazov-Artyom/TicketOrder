@@ -1,6 +1,5 @@
 package ru.almaz.ticketservice.dao;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,14 +23,6 @@ public class CarrierDao {
 
     private final CarrierRowMapper carrierRowMapper;
 
-    private static final String CREATE_TABLE_SQL = """
-                CREATE TABLE IF NOT EXISTS carrier (
-                    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-                    name VARCHAR(255) NOT NULL,
-                    phone_number VARCHAR(255) NOT NULL
-                )
-            """;
-
     private static final String SAVE_SQL = """
                 INSERT INTO carrier(name, phone_number)
                 VALUES (?, ?)
@@ -50,11 +41,6 @@ public class CarrierDao {
                 DELETE FROM carrier
                 WHERE id = ?
             """;
-
-    @PostConstruct
-    public void init() {
-        jdbcTemplate.execute(CREATE_TABLE_SQL);
-    }
 
     public Carrier save(Carrier carrier) {
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();

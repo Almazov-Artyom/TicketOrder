@@ -32,20 +32,6 @@ public class TicketDao {
 
     private final SimpleTicketRowMapper simpleTicketRowMapper;
 
-    private static final String CREATE_TABLE_SQL = """
-                CREATE TABLE IF NOT EXISTS ticket (
-                    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    route_id BIGINT,
-                    departure_time TIMESTAMP(0) NOT NULL,
-                    seat_number varchar(50) NOT NULL,
-                    price NUMERIC(10,2) NOT NULL,
-                    status varchar(50) NOT NULL CHECK ( status IN ('AVAILABLE','PURCHASED')),
-                    user_id BIGINT,
-                    FOREIGN KEY (route_id) REFERENCES route(id) ON DELETE SET NULL,
-                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-                )
-            """;
-
     private static final String EXIST_TICKET_FOR_PURCHASE_SQL = """
                 SELECT EXISTS(
                     SELECT *
@@ -98,11 +84,6 @@ public class TicketDao {
                 DELETE FROM ticket
                 WHERE id = ?
             """;
-
-    @PostConstruct
-    public void init() {
-        jdbcTemplate.execute(CREATE_TABLE_SQL);
-    }
 
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
         Map.Entry<String, List<Object>> sqlAndParams = sqlTicketFilterBuilder.buildSqlAndParams(ticketFilter);

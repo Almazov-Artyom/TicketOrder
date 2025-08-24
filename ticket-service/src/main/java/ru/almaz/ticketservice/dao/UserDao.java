@@ -22,18 +22,6 @@ import java.util.Optional;
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
 
-    private static final String CREATE_TABLE_SQL = """
-                CREATE TABLE IF NOT EXISTS users (
-                    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    email varchar(255) NOT NULL UNIQUE,
-                    password varchar(255) NOT NULL,
-                    last_name varchar(255),
-                    first_name varchar(255),
-                    middle_name varchar(255),
-                    role varchar(255) NOT NULL
-                )
-            """;
-
     private static final String SAVE_SQL = """
                 INSERT INTO users (email, password, last_name, first_name, middle_name, role)
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -45,11 +33,6 @@ public class UserDao {
                 FROM users
                 WHERE email = ?
             """;
-
-    @PostConstruct
-    public void init() {
-        jdbcTemplate.execute(CREATE_TABLE_SQL);
-    }
 
     public User save(User user) {
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
