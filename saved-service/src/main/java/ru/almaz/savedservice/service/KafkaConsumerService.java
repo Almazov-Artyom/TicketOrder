@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import ru.almaz.savedservice.entity.Ticket;

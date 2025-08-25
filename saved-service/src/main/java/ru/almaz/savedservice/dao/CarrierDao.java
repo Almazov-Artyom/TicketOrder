@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.almaz.savedservice.entity.Carrier;
 
 import java.sql.PreparedStatement;
-import java.util.List;
-import java.util.Map;
-
 
 @Repository
 @RequiredArgsConstructor
