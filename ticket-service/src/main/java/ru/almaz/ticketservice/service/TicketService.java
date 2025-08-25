@@ -30,6 +30,8 @@ public class TicketService {
 
     private final TicketCacheService ticketCacheService;
 
+    private final KafkaProducerService kafkaProducerService;
+
     @Transactional(readOnly = true)
     public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
         ticketValidator.dateValidation(ticketFilter);
@@ -54,6 +56,7 @@ public class TicketService {
             @Override
             public void afterCommit() {
                 ticketCacheService.putTicket(userId, ticket);
+                kafkaProducerService.sendTicket(ticket);
             }
         });
 
