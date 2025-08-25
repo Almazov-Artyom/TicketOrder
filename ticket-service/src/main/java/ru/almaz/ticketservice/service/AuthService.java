@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.almaz.ticketservice.dto.auth.*;
 import ru.almaz.ticketservice.entity.User;
 import ru.almaz.ticketservice.enums.Role;
@@ -35,6 +36,7 @@ public class AuthService {
 
     private final UserValidator userValidator;
 
+    @Transactional
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
         userValidator.isEmailValid(registrationRequest.email());
 

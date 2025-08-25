@@ -6,7 +6,6 @@ import ru.almaz.ticketservice.dao.TicketDao;
 import ru.almaz.ticketservice.dto.ticket.TicketFilter;
 import ru.almaz.ticketservice.exception.InvalidDepartureTimeException;
 import ru.almaz.ticketservice.exception.TicketNotFoundException;
-import ru.almaz.ticketservice.exception.TicketUnavailableException;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -18,12 +17,6 @@ import java.time.LocalTime;
 public class TicketValidator {
 
     private final TicketDao ticketDao;
-
-    public void isTicketForPurchaseValid(Long ticketId){
-        if(!ticketDao.existTicketForPurchase(ticketId)) {
-            throw new TicketUnavailableException("Билет не доступен для покупки");
-        }
-    }
 
     public void dateValidation(TicketFilter ticketFilter) {
         LocalDate departureDate = ticketFilter.getDepartureDate();

@@ -16,5 +16,4 @@ public @interface NotBlankIfPresent {
     String message() default "Поле не должно быть пустым, если присутствует";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
 }

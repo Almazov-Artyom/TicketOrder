@@ -9,6 +9,7 @@ import ru.almaz.ticketservice.dao.TicketDao;
 import ru.almaz.ticketservice.dto.ticket.*;
 import ru.almaz.ticketservice.entity.Ticket;
 import ru.almaz.ticketservice.enums.TicketStatus;
+import ru.almaz.ticketservice.exception.TicketUnavailableException;
 import ru.almaz.ticketservice.mapper.TicketMapper;
 import ru.almaz.ticketservice.validator.RouteValidator;
 import ru.almaz.ticketservice.validator.TicketValidator;
@@ -33,7 +34,7 @@ public class TicketService {
     private final KafkaProducerService kafkaProducerService;
 
     @Transactional(readOnly = true)
-    public List<TicketDto> getAvailableTickets(TicketFilter ticketFilter) {
+    public List<TicketInfo> getAvailableTickets(TicketFilter ticketFilter) {
         ticketValidator.dateValidation(ticketFilter);
 
         List<Ticket> allAvailableTickets = ticketDao.findAllAvailableTickets(ticketFilter);
@@ -44,13 +45,13 @@ public class TicketService {
                 .toList();
     }
 
-    @Transactional()
+    @Transactional
     public void buyTicket(Long ticketId) {
-        ticketValidator.isTicketForPurchaseValid(ticketId);
-
         Long userId = userService.getCurrentUserId();
 
         Ticket ticket = ticketDao.updateTicketStatusAndUserId(userId, ticketId);
+
+        if (ticket == null) throw new TicketUnavailableException("Билет не доступен для покупки");
 
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
@@ -59,16 +60,15 @@ public class TicketService {
                 kafkaProducerService.sendTicket(ticket);
             }
         });
-
     }
 
     @Transactional(readOnly = true)
-    public List<TicketDto> getAllTicketsByUser() {
+    public List<TicketInfo> getAllTicketsByUser() {
         Long userId = userService.getCurrentUserId();
 
         List<Ticket> purchasedTickets = ticketCacheService.getPurchasedTickets(userId);
 
-        if(purchasedTickets.isEmpty()) {
+        if (purchasedTickets.isEmpty()) {
             purchasedTickets = ticketDao.findAllTicketsByUserId(userId);
             ticketCacheService.putTickets(userId, purchasedTickets);
         }
@@ -81,7 +81,7 @@ public class TicketService {
     }
 
     @Transactional
-    public TicketResponse saveTicket(AddTicketRequest ticketRequest) {
+    public TicketDto saveTicket(AddTicketRequest ticketRequest) {
         routeValidator.isRouteValid(ticketRequest.routeId());
 
         Ticket ticket = ticketMapper.toTicket(ticketRequest);
@@ -93,7 +93,7 @@ public class TicketService {
     }
 
     @Transactional
-    public TicketResponse updateTicket(Long ticketId, UpdateTicketRequest ticketRequest) {
+    public TicketDto updateTicket(Long ticketId, UpdateTicketRequest ticketRequest) {
         ticketValidator.isTickedValid(ticketId);
 
         if (ticketRequest.routeId() != null)

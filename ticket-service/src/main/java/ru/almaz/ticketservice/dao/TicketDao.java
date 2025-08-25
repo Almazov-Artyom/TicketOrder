@@ -32,19 +32,11 @@ public class TicketDao {
 
     private final SimpleTicketRowMapper simpleTicketRowMapper;
 
-    private static final String EXIST_TICKET_FOR_PURCHASE_SQL = """
-                SELECT EXISTS(
-                    SELECT *
-                    FROM ticket
-                    WHERE id = ? AND departure_time >= NOW() AND status = 'AVAILABLE'
-                )
-            """;
-
     private static final String UPDATE_TICKET_STATUS_AND_USER_ID_SQL = """
                 WITH updated AS (
                     UPDATE ticket
                     SET status = 'PURCHASED', user_id = ?
-                    WHERE id = ?
+                    WHERE id = ? AND status = 'AVAILABLE'
                     RETURNING id, route_id, departure_time,seat_number, price, status
                 )
                 SELECT
@@ -111,11 +103,6 @@ public class TicketDao {
         List<Object> params = sqlAndParams.getValue();
 
         return jdbcTemplate.query(sql, ticketRowMapper, params.toArray());
-    }
-
-    public boolean existTicketForPurchase(Long ticketId) {
-        Boolean exists = jdbcTemplate.queryForObject(EXIST_TICKET_FOR_PURCHASE_SQL, Boolean.class, ticketId);
-        return Boolean.TRUE.equals(exists);
     }
 
     public Ticket updateTicketStatusAndUserId(Long userId, Long ticketId) {

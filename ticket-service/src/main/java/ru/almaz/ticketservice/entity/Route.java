@@ -3,7 +3,6 @@ package ru.almaz.ticketservice.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Duration;
 
 @Getter
 @Setter

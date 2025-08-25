@@ -25,9 +25,9 @@ public class JwtCacheService {
     }
 
     public void putRefreshToken(String userId, String refreshToken) {
-        Cache accessTokenCache = cacheManager.getCache(refreshTokenCacheName);
-        if (accessTokenCache != null) {
-            accessTokenCache.put(userId, refreshToken);
+        Cache refreshTokenCache = cacheManager.getCache(refreshTokenCacheName);
+        if (refreshTokenCache != null) {
+            refreshTokenCache.put(userId, refreshToken);
         }
     }
 
@@ -41,10 +41,10 @@ public class JwtCacheService {
     }
 
     public String getRefreshToken(String userId) {
-        Cache accessTokenCache = cacheManager.getCache(refreshTokenCacheName);
+        Cache refreshTokenCache = cacheManager.getCache(refreshTokenCacheName);
         String refreshToken = null;
-        if (accessTokenCache != null) {
-            refreshToken = accessTokenCache.get(userId, String.class);
+        if (refreshTokenCache != null) {
+            refreshToken = refreshTokenCache.get(userId, String.class);
         }
         return refreshToken;
     }

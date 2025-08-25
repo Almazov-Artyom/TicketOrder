@@ -1,16 +1,12 @@
 package ru.almaz.ticketservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.almaz.ticketservice.entity.Ticket;
-import ru.almaz.ticketservice.enums.TicketStatus;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor

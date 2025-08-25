@@ -2,7 +2,6 @@ package ru.almaz.ticketservice.dao.builder;
 
 import lombok.SneakyThrows;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
-import ru.almaz.ticketservice.dto.carrier.UpdateCarrierDto;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractUpdateSqlParamsBuilder<T> implements SqlParamsBuilder<T> {
-    private final Map<String, Field> fieldToColumn;
+    private final Map<String, Field> fieldColumn;
 
     private final Class<T> clazz;
 
@@ -21,15 +20,15 @@ public abstract class AbstractUpdateSqlParamsBuilder<T> implements SqlParamsBuil
             field.setAccessible(true);
             if(field.isAnnotationPresent(ColumnMapping.class)){
                 String value = field.getAnnotation(ColumnMapping.class).value();
-                fieldToColumn.put(value, field);
+                fieldColumn.put(value, field);
             }
             else
-                fieldToColumn.put(field.getName(), field);
+                fieldColumn.put(field.getName(), field);
         }
     }
 
     protected AbstractUpdateSqlParamsBuilder(Class<T> clazz) {
-        fieldToColumn = new HashMap<>();
+        fieldColumn = new HashMap<>();
         this.clazz = clazz;
         cacheFields();
     }
@@ -44,10 +43,8 @@ public abstract class AbstractUpdateSqlParamsBuilder<T> implements SqlParamsBuil
                 .append(" SET ");
         List<Object> params = new ArrayList<>();
 
-        Class<UpdateCarrierDto> updateCarrierDtoClass = UpdateCarrierDto.class;
-
         boolean first = true;
-        for (var entry : fieldToColumn.entrySet()){
+        for (var entry : fieldColumn.entrySet()){
             Object value = entry.getValue().get(t);
             if(value != null){
                 String columnName = entry.getKey();

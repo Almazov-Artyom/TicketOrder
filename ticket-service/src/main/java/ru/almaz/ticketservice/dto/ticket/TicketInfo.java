@@ -2,17 +2,21 @@ package ru.almaz.ticketservice.dto.ticket;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
-public record TicketResponse(
+public record TicketInfo(
         Long id,
 
-        @JsonProperty("route_id")
-        Long routeId,
+        String origin,
+
+        String destination,
+
+        @JsonProperty("carrier_name")
+        String carrierName,
+
+        String duration,
 
         @JsonProperty("departure_time")
         @JsonFormat(pattern = "dd.MM.yyyy H:mm")
@@ -21,8 +25,6 @@ public record TicketResponse(
         @JsonProperty("seat_number")
         String seatNumber,
 
-        BigDecimal price,
-
-        TicketStatus status
+        BigDecimal price
 ) {
 }

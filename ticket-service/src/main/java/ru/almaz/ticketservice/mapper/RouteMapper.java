@@ -6,7 +6,6 @@ import ru.almaz.ticketservice.dto.route.AddRouteRequest;
 import ru.almaz.ticketservice.entity.Carrier;
 import ru.almaz.ticketservice.entity.Route;
 
-import java.time.Duration;
 
 @Component
 public class RouteMapper {

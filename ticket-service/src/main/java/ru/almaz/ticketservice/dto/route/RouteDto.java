@@ -2,8 +2,6 @@ package ru.almaz.ticketservice.dto.route;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Duration;
-
 public record RouteDto(
 
         Long id,

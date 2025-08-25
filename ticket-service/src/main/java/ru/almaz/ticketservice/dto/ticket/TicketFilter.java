@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import ru.almaz.ticketservice.annotation.ColumnMapping;
@@ -37,15 +38,18 @@ public class TicketFilter{
 
         @ColumnMapping("r.origin")
         @NotBlankIfPresent(message = "Пункт отправления не может быть пустым")
+        @Size(max = 255, message = "Пункт отправления не больше 255 символов")
         private String origin;
 
         @ColumnMapping("r.destination")
         @NotBlankIfPresent(message = "Пункт назначения не может быть пустым")
+        @Size(max = 255, message = "Пункт назначения не больше 255 символов")
         private String destination;
 
         @ColumnMapping("c.name")
         @JsonProperty("carrier_name")
         @NotBlankIfPresent(message = "Название перевозчика не может быть пустым")
+        @Size(max = 255, message = "Название перевозчика не больше 255 символов")
         private String carrierName;
 }
 

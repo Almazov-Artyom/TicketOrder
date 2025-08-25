@@ -11,7 +11,7 @@ import java.util.*;
 @Component
 public class TicketFilterSqlParamsBuilder implements SqlParamsBuilder<TicketFilter> {
 
-    private final Map<String, String> fieldToColumn;
+    private final Map<String, Field> fieldColumn;
 
     private static final String FIND_AVAILABLE_TICKETS_SQL = """
                 SELECT
@@ -37,17 +37,17 @@ public class TicketFilterSqlParamsBuilder implements SqlParamsBuilder<TicketFilt
     private void cacheFields() {
         Class<TicketFilter> ticketFilterClass = TicketFilter.class;
         Field[] declaredFields = ticketFilterClass.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            if (declaredField.isAnnotationPresent(ColumnMapping.class)) {
-                String value = declaredField.getAnnotation(ColumnMapping.class).value();
-                declaredField.setAccessible(true);
-                fieldToColumn.put(declaredField.getName(), value);
+        for (Field field : declaredFields) {
+            if (field.isAnnotationPresent(ColumnMapping.class)) {
+                String value = field.getAnnotation(ColumnMapping.class).value();
+                field.setAccessible(true);
+                fieldColumn.put(value, field);
             }
         }
     }
 
     public TicketFilterSqlParamsBuilder() {
-        fieldToColumn = new HashMap<>();
+        fieldColumn = new HashMap<>();
         cacheFields();
     }
 
@@ -60,12 +60,10 @@ public class TicketFilterSqlParamsBuilder implements SqlParamsBuilder<TicketFilt
         Class<TicketFilter> ticketFilterClass = TicketFilter.class;
         Field[] declaredFields = ticketFilterClass.getDeclaredFields();
 
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            Object value = declaredField.get(t);
+        for (var entry : fieldColumn.entrySet()) {
+            Object value = entry.getValue().get(t);
             if (value != null) {
-                String column = fieldToColumn.get(declaredField.getName());
-                if (column == null) continue;
+                String column = entry.getKey();
 
                 sql.append(" AND ").append(column);
                 if (value instanceof String) {

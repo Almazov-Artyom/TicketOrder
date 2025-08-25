@@ -15,7 +15,7 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping
-    public List<TicketDto> getAvailableTickets(@RequestBody @Valid TicketFilter ticketFilter) {
+    public List<TicketInfo> getAvailableTickets(@RequestBody @Valid TicketFilter ticketFilter) {
         return ticketService.getAvailableTickets(ticketFilter);
     }
 
@@ -25,18 +25,18 @@ public class TicketController {
     }
 
     @GetMapping("/purchased")
-    public List<TicketDto> getPurchasedTickets() {
+    public List<TicketInfo> getPurchasedTickets() {
         return ticketService.getAllTicketsByUser();
     }
 
     @PostMapping
-    public TicketResponse addTicket(@RequestBody @Valid AddTicketRequest ticketRequest) {
+    public TicketDto addTicket(@RequestBody @Valid AddTicketRequest ticketRequest) {
         return ticketService.saveTicket(ticketRequest);
     }
 
     @PatchMapping("/{ticketId}")
-    public TicketResponse updateTicket(@PathVariable Long ticketId,
-                                       @RequestBody @Valid UpdateTicketRequest ticketRequest) {
+    public TicketDto updateTicket(@PathVariable Long ticketId,
+                                  @RequestBody @Valid UpdateTicketRequest ticketRequest) {
         return ticketService.updateTicket(ticketId, ticketRequest);
     }
 

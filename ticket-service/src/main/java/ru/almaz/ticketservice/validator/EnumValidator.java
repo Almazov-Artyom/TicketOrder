@@ -3,7 +3,6 @@ package ru.almaz.ticketservice.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import ru.almaz.ticketservice.annotation.EnumValid;
-import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.util.Arrays;
 import java.util.Set;

@@ -1,20 +1,16 @@
 package ru.almaz.ticketservice.dao;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.almaz.ticketservice.entity.User;
-import ru.almaz.ticketservice.enums.Role;
+
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository

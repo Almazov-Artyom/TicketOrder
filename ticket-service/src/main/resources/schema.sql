@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS carrier
 (
     id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     name         VARCHAR(255)                                    NOT NULL,
-    phone_number VARCHAR(255)                                    NOT NULL
+    phone_number VARCHAR(20)                                    NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS route

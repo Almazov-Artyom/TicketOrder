@@ -14,7 +14,6 @@ import ru.almaz.ticketservice.exception.*;
 
 import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
-import java.time.format.DateTimeParseException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

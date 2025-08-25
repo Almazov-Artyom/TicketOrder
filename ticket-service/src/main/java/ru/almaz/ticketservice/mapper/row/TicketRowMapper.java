@@ -9,7 +9,6 @@ import ru.almaz.ticketservice.enums.TicketStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
 
 @Component
 public class TicketRowMapper implements RowMapper<Ticket> {

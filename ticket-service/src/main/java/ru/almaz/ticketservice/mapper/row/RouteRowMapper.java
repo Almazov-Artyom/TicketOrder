@@ -7,7 +7,6 @@ import ru.almaz.ticketservice.entity.Route;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
 
 @Component
 public class RouteRowMapper implements RowMapper<Route> {
