@@ -1,8 +1,8 @@
 package ru.almaz.savedservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,10 +13,11 @@ import ru.almaz.savedservice.entity.Ticket;
 @RequiredArgsConstructor
 public class KafkaConsumerService {
 
-    @KafkaListener(topics = "tickets", groupId = "group1")
-    public void listenVerifyEmail(@Payload String ticket) throws JsonProcessingException {
-      ObjectMapper objectMapper = new ObjectMapper();
-      Ticket ticketObject = objectMapper.readValue(ticket, Ticket.class);
-        System.out.println();
+    @KafkaListener(topics = "${spring.kafka.consumer.topic}")
+    @SneakyThrows
+    public void listenTicket(@Payload String ticketString) {
+        ObjectMapper mapper = new ObjectMapper();
+        Ticket ticket = mapper.readValue(ticketString, Ticket.class);
     }
 }
+
