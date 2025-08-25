@@ -13,11 +13,15 @@ import ru.almaz.savedservice.entity.Ticket;
 @RequiredArgsConstructor
 public class KafkaConsumerService {
 
+    private final SaveService saveService;
+
     @KafkaListener(topics = "${spring.kafka.consumer.topic}")
     @SneakyThrows
     public void listenTicket(@Payload String ticketString) {
         ObjectMapper mapper = new ObjectMapper();
         Ticket ticket = mapper.readValue(ticketString, Ticket.class);
+
+        saveService.saveTicket(ticket);
     }
 }
 
