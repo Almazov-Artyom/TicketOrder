@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS ticket
     departure_time TIMESTAMP(0)   NOT NULL,
     seat_number    varchar(50)    NOT NULL,
     price          NUMERIC(10, 2) NOT NULL,
-    status         varchar(50)    NOT NULL CHECK ( status IN ('AVAILABLE', 'PURCHASED')),
+    status         varchar(50)    NOT NULL CHECK ( status IN ('AVAILABLE', 'PURCHASED', 'EXPIRED')),
     user_id        BIGINT,
     FOREIGN KEY (route_id) REFERENCES route (id) ON DELETE SET NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL

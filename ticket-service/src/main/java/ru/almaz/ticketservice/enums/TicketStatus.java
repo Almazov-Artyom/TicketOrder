@@ -2,5 +2,6 @@ package ru.almaz.ticketservice.enums;
 
 public enum TicketStatus {
     AVAILABLE,
-    PURCHASED
+    PURCHASED,
+    EXPIRED
 }

@@ -1,6 +1,7 @@
 package ru.almaz.ticketservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -108,5 +109,10 @@ public class TicketService {
     public void deleteTicket(Long ticketId) {
         ticketValidator.isTickedValid(ticketId);
         ticketDao.deleteTicket(ticketId);
+    }
+
+    @Scheduled(fixedRate = 60000 )
+    public void updateExpiredTickets() {
+        ticketDao.updateTicketStatusOnExpired();
     }
 }

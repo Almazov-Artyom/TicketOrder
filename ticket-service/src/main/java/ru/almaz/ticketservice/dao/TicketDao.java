@@ -36,7 +36,7 @@ public class TicketDao {
                 WITH updated AS (
                     UPDATE ticket
                     SET status = 'PURCHASED', user_id = ?
-                    WHERE id = ? AND status = 'AVAILABLE'
+                    WHERE id = ? AND status = 'AVAILABLE' AND departure_time > NOW()
                     RETURNING id, route_id, departure_time,seat_number, price, status
                 )
                 SELECT
@@ -96,6 +96,12 @@ public class TicketDao {
                 WHERE id = ?
             """;
 
+    private static final String UPDATE_STATUS_TICKET_BY_TIME_SQL = """
+                UPDATE ticket
+                SET status = 'EXPIRED'
+                WHERE departure_time < NOW() AND status = 'AVAILABLE'
+            """;
+
     public List<Ticket> findAllAvailableTickets(TicketFilter ticketFilter) {
         Map.Entry<String, List<Object>> sqlAndParams = sqlTicketFilterBuilder.buildSqlAndParams(ticketFilter);
 
@@ -147,6 +153,10 @@ public class TicketDao {
 
     public void deleteTicket(Long ticketId) {
         jdbcTemplate.update(DELETE_SQL, ticketId);
+    }
+
+    public void updateTicketStatusOnExpired(){
+        jdbcTemplate.update(UPDATE_STATUS_TICKET_BY_TIME_SQL);
     }
 }
 
