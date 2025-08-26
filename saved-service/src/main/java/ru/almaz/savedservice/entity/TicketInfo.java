@@ -2,24 +2,29 @@ package ru.almaz.savedservice.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.almaz.savedservice.enums.TicketStatus;
-
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
 @Setter
-public class Ticket {
+public class TicketInfo {
+
     private Long id;
 
-    private Route route;
+    private Long ticketId;
+
+    private String origin;
+
+    private String destination;
+
+    private String carrierName;
+
+    private Integer duration;
 
     private Timestamp departureTime;
 
     private String seatNumber;
 
     private BigDecimal price;
-
-    private TicketStatus status;
 }

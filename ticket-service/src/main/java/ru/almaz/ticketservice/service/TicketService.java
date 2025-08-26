@@ -42,7 +42,7 @@ public class TicketService {
 
         return allAvailableTickets
                 .stream()
-                .map(ticketMapper::toDto)
+                .map(ticketMapper::toTicketInfo)
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class TicketService {
             @Override
             public void afterCommit() {
                 ticketCacheService.putTicket(userId, ticket);
-                kafkaProducerService.sendTicket(ticket);
+                kafkaProducerService.sendTicket(ticketMapper.toSendTicket(ticket));
             }
         });
     }
@@ -78,7 +78,7 @@ public class TicketService {
 
         return purchasedTickets
                 .stream()
-                .map(ticketMapper::toDto)
+                .map(ticketMapper::toTicketInfo)
                 .toList();
 
     }
@@ -92,7 +92,7 @@ public class TicketService {
 
         ticketDao.save(ticket);
 
-        return ticketMapper.toTicketResponse(ticket);
+        return ticketMapper.toTicketDto(ticket);
     }
 
     @Transactional
@@ -104,7 +104,7 @@ public class TicketService {
 
         Ticket ticket = ticketDao.updateTicket(ticketId, ticketRequest);
 
-        return ticketMapper.toTicketResponse(ticket);
+        return ticketMapper.toTicketDto(ticket);
     }
 
     @Transactional

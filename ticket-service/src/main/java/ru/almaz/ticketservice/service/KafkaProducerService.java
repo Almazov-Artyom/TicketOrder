@@ -6,7 +6,8 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.almaz.ticketservice.entity.Ticket;
+import ru.almaz.ticketservice.dto.ticket.SendTicket;
+import ru.almaz.ticketservice.dto.ticket.TicketInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class KafkaProducerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @SneakyThrows
-    public void sendTicket(Ticket ticket) {
+    public void sendTicket(SendTicket ticket) {
         ObjectMapper mapper = new ObjectMapper();
         String ticketString = mapper.writeValueAsString(ticket);
         kafkaTemplate.send(ticketTopicName, ticketString);

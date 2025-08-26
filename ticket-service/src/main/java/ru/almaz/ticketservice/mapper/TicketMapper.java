@@ -1,6 +1,7 @@
 package ru.almaz.ticketservice.mapper;
 
 import org.springframework.stereotype.Component;
+import ru.almaz.ticketservice.dto.ticket.SendTicket;
 import ru.almaz.ticketservice.dto.ticket.TicketInfo;
 import ru.almaz.ticketservice.dto.ticket.AddTicketRequest;
 import ru.almaz.ticketservice.dto.ticket.TicketDto;
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 @Component
 public class TicketMapper {
 
-    public TicketInfo toDto(Ticket ticket) {
+    public TicketInfo toTicketInfo(Ticket ticket) {
         Route route = ticket.getRoute();
         Carrier carrier = route.getCarrier();
         String duration = route.getDuration() + " min";
@@ -38,7 +39,7 @@ public class TicketMapper {
         return ticket;
     }
 
-    public TicketDto toTicketResponse(Ticket ticket) {
+    public TicketDto toTicketDto(Ticket ticket) {
         Long ticketId = ticket.getId();
         Long routeId = ticket.getRoute().getId();
         Timestamp departureTime = ticket.getDepartureTime();
@@ -47,5 +48,15 @@ public class TicketMapper {
         TicketStatus status = ticket.getStatus();
 
         return new TicketDto(ticketId, routeId, departureTime, seatNumber, price, status);
+    }
+
+    public SendTicket toSendTicket(Ticket ticket) {
+        Route route = ticket.getRoute();
+        Carrier carrier = route.getCarrier();
+
+        return new SendTicket(
+                ticket.getId(), route.getOrigin(), route.getDestination(), carrier.getName(), route.getDuration(),
+                ticket.getDepartureTime(), ticket.getSeatNumber(), ticket.getPrice()
+        );
     }
 }
