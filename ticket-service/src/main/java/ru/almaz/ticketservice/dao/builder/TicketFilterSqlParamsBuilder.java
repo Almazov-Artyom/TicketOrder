@@ -57,9 +57,6 @@ public class TicketFilterSqlParamsBuilder implements SqlParamsBuilder<TicketFilt
         StringBuilder sql = new StringBuilder(FIND_AVAILABLE_TICKETS_SQL);
         List<Object> params = new ArrayList<>();
 
-        Class<TicketFilter> ticketFilterClass = TicketFilter.class;
-        Field[] declaredFields = ticketFilterClass.getDeclaredFields();
-
         for (var entry : fieldColumn.entrySet()) {
             Object value = entry.getValue().get(t);
             if (value != null) {

@@ -142,7 +142,7 @@ public class TicketDao {
         String sql = sqlAndParams.getKey() + " WHERE id = ? RETURNING id, route_id, departure_time, seat_number, price, status";
         List<Object> params = sqlAndParams.getValue();
         params.add(ticketId);
-        System.out.println(sql);
+
         return jdbcTemplate.queryForObject(sql, simpleTicketRowMapper, params.toArray());
     }
 

@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.ap.shaded.freemarker.core.LocalContext;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -63,10 +65,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (InvalidAccessTokenException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
+            response.setContentType("application/problem+json");
             response.setCharacterEncoding("UTF-8");
-            String message = messageSource.getMessage(e.getMessage(), null, request.getLocale());
-            String json = String.format("{\"status\": 401, \"error\": \"Unauthorized\", \"message\": \"%s\"}", message);
+            String message = messageSource.getMessage(e.getMessage(), null, LocaleContextHolder.getLocale());
+            String json = String.format("{\"status\": 401, \"title\": \"Unauthorized\", \"detail\": \"%s\"}", message);
             response.getWriter().write(json);
         }
     }

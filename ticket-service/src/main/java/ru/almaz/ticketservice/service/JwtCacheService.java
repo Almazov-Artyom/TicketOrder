@@ -15,7 +15,7 @@ public class JwtCacheService {
     private String accessTokenCacheName;
 
     @Value("${cache.refresh-token.name}")
-     private String refreshTokenCacheName;
+    private String refreshTokenCacheName;
 
     public void putAccessToken(String userId, String accessToken) {
         Cache accessTokenCache = cacheManager.getCache(accessTokenCacheName);

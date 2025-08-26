@@ -1,4 +1,4 @@
-package ru.almaz.ticketservice.controller;
+package ru.almaz.ticketservice.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,6 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,10 +26,14 @@ public class GlobalExceptionHandler {
         return messageSource.getMessage(e.getMessage(), null, e.getMessage(), locale);
     }
 
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ProblemDetail handleConflictException(UserAlreadyExistException e, Locale locale) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, getMessage(e, locale));
+    }
+
     @ExceptionHandler({
-            UserAlreadyExistException.class,
             InvalidDepartureTimeException.class,
-            TicketUnavailableException.class,
+            TicketUnavailableException.class
     })
     public ProblemDetail handleBadRequestException(RuntimeException e, Locale locale) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, getMessage(e, locale));
@@ -69,7 +71,7 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
     })
     public ProblemDetail handleNotFoundException(RuntimeException e, Locale locale) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,  getMessage(e, locale));
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, getMessage(e, locale));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

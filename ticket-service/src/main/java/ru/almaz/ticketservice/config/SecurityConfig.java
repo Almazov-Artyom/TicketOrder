@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.almaz.ticketservice.handler.CustomAccessDeniedHandler;
 import ru.almaz.ticketservice.filter.JwtAuthFilter;
 import ru.almaz.ticketservice.service.UserService;
 
@@ -22,6 +23,8 @@ import ru.almaz.ticketservice.service.UserService;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthenticationFilter;
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
@@ -47,15 +50,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/carrier/**").hasAuthority("ADMIN")
                         .requestMatchers("/route/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/ticket").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ticket/available").permitAll()
                         .requestMatchers(HttpMethod.POST, "/ticket/buy/**").hasAuthority("USER")
                         .requestMatchers(HttpMethod.GET, "/ticket/purchased").hasAuthority("USER")
                         .requestMatchers("/ticket/**").hasAuthority("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler));
         return http.build();
     }
 

@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 
 @Component
 public class TicketMapper {
+
     public TicketInfo toDto(Ticket ticket) {
         Route route = ticket.getRoute();
         Carrier carrier = route.getCarrier();

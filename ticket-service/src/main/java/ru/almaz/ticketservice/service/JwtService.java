@@ -63,7 +63,7 @@ public class JwtService {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (Exception e) {
-            throw new InvalidAccessTokenException("Невалидный токен");
+            throw new InvalidAccessTokenException("token.invalid");
         }
     }
 

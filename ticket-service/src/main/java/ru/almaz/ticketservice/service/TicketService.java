@@ -48,6 +48,8 @@ public class TicketService {
 
     @Transactional
     public void buyTicket(Long ticketId) {
+        ticketValidator.isTickedValid(ticketId);
+
         Long userId = userService.getCurrentUserId();
 
         Ticket ticket = ticketDao.updateTicketStatusAndUserId(userId, ticketId);
@@ -111,7 +113,7 @@ public class TicketService {
         ticketDao.deleteTicket(ticketId);
     }
 
-    @Scheduled(fixedRate = 60000 )
+    @Scheduled(fixedRate = 60000)
     public void updateExpiredTickets() {
         ticketDao.updateTicketStatusOnExpired();
     }

@@ -46,7 +46,7 @@ public class UserService {
         return this::getUserByEmail;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void createAdmin() {
         if(userDao.findByEmail(adminEmail).isPresent())
             return;
