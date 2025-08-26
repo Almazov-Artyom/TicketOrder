@@ -8,21 +8,21 @@ import jakarta.validation.constraints.Size;
 
 
 public record AddRouteRequest(
-        @NotBlank(message = "Пункт отправления не может быть пустым")
-        @Size(max = 255, message = "Пункт отправления не больше 255 символов")
+        @NotBlank(message = "{route.origin.blank}")
+        @Size(max = 255, message = "{route.origin.size}")
         String origin,
 
-        @NotBlank(message = "Пункт назначения не может быть пустым")
-        @Size(max = 255, message = "Пункт назначения не больше 255 символов")
+        @NotBlank(message = "{route.destination.blank}")
+        @Size(max = 255, message = "{route.destination.size}")
         String destination,
 
-        @NotNull(message = "carrier_id не может быть null")
-        @Positive(message = "carrier_id должна быть положительной")
+        @NotNull(message = "{route.carrier.id.null}")
+        @Positive(message = "{route.carrier.id.positive}")
         @JsonProperty("carrier_id")
         Long carrierId,
 
-        @NotNull(message = "Длительность не может быть null")
-        @Positive(message = "Длительность должна быть положительной")
+        @NotNull(message = "{route.duration.null}")
+        @Positive(message = "{route.duration.positive}")
         Integer duration
 ) {
 }

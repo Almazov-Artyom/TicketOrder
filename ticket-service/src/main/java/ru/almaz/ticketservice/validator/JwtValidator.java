@@ -13,15 +13,21 @@ public class JwtValidator {
 
     public void isAccessTokenValid(String email, String token) {
         String tokenFromCache = jwtCacheService.getAccessToken(email);
-        if(!tokenFromCache.equals(token)) {
-            throw new InvalidAccessTokenException("Access токен невалидный");
+        if(tokenFromCache != null){
+            if(tokenFromCache.equals(token)) {
+                return;
+            }
         }
+        throw new InvalidAccessTokenException("access.token.invalid");
     }
 
     public void isRefreshTokenValid(String email, String token) {
         String tokenFromCache = jwtCacheService.getRefreshToken(email);
-        if(!tokenFromCache.equals(token)) {
-            throw new InvalidRefreshTokenException("Refresh токен невалидный");
+        if(tokenFromCache != null){
+            if(tokenFromCache.equals(token)) {
+                return;
+            }
         }
+        throw new InvalidRefreshTokenException("refresh.token.invalid");
     }
 }

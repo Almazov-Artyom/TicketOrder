@@ -67,7 +67,7 @@ public class AuthService {
 
             return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException ex) {
-            throw new UserUnauthenticatedException("Пользователь не аутентифицирован");
+            throw new UserUnauthenticatedException("user.unauthenticated");
         }
     }
 

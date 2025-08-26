@@ -18,12 +18,12 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class TicketFilter{
-        @NotNull(message = "limit не может быть пустым")
-        @Positive(message = "limit должен быть положительным")
+        @NotNull(message = "{ticket.limit.null}")
+        @Positive(message = "{ticket.limit.positive}")
         private Integer limit;
 
-        @NotNull(message = "offset не может быть пустым")
-        @PositiveOrZero(message = "offset должен быть неотрицательный")
+        @NotNull(message = "{ticket.offset.null}")
+        @PositiveOrZero(message = "{ticket.offset.positive}")
         private Integer offset;
 
         @JsonProperty("departure_date")
@@ -37,19 +37,19 @@ public class TicketFilter{
         private Timestamp departureDateTime;
 
         @ColumnMapping("r.origin")
-        @NotBlankIfPresent(message = "Пункт отправления не может быть пустым")
-        @Size(max = 255, message = "Пункт отправления не больше 255 символов")
+        @NotBlankIfPresent(message = "{route.origin.blank}")
+        @Size(max = 255, message = "{route.origin.size}")
         private String origin;
 
         @ColumnMapping("r.destination")
-        @NotBlankIfPresent(message = "Пункт назначения не может быть пустым")
-        @Size(max = 255, message = "Пункт назначения не больше 255 символов")
+        @NotBlankIfPresent(message = "{route.destination.blank}")
+        @Size(max = 255, message = "{route.destination.size}")
         private String destination;
 
         @ColumnMapping("c.name")
         @JsonProperty("carrier_name")
-        @NotBlankIfPresent(message = "Название перевозчика не может быть пустым")
-        @Size(max = 255, message = "Название перевозчика не больше 255 символов")
+        @NotBlankIfPresent(message = "{carrier.name.blank}")
+        @Size(max = 255, message = "{carrier.name.size}")
         private String carrierName;
 }
 

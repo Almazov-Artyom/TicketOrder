@@ -7,28 +7,28 @@ import jakarta.validation.constraints.Size;
 import ru.almaz.ticketservice.annotation.NotBlankIfPresent;
 
 public record RegistrationRequest(
-        @NotBlank(message = "Email не может быть пустым")
-        @Email(message = "Неправильный email")
-        @Size(max = 255, message = "Email не больше 255 символов")
+        @NotBlank(message = "{email.blank}")
+        @Email(message = "{email.invalid}")
+        @Size(max = 255, message = "{email.size}")
         String email,
 
-        @NotBlank(message = "Пароль не может быть пустым")
-        @Size(min=6, max = 255, message = "Пароль должен быть от 6 до 255 символов")
+        @NotBlank(message = "{password.blank}")
+        @Size(min=6, max = 255, message = "{password.size}")
         String password,
 
-        @NotBlank(message = "Фамилия не можеть быть пуст")
+        @NotBlank(message = "{last.name.blank}")
         @JsonProperty("last_name")
-        @Size(max = 255, message = "Фамилия не больше 255 символов")
+        @Size(max = 255, message = "{last.name.size}")
         String lastName,
 
-        @NotBlank(message = "Имя не может быть пустым")
+        @NotBlank(message = "{first.name.blank}")
         @JsonProperty("first_name")
-        @Size(max = 255, message = "Имя не больше 255 символов")
+        @Size(max = 255, message = "{first.name.size}")
         String firstName,
 
-        @NotBlankIfPresent(message = "Отчество не может быть пустым")
+        @NotBlankIfPresent(message = "{middle.name.blank}")
         @JsonProperty("middle_name")
-        @Size(max = 255, message = "Отчество не больше 255 символов")
+        @Size(max = 255, message = "{middle.name.size}")
         String middleName
 ) {
 }

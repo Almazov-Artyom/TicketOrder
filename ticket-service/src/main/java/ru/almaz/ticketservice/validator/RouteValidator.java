@@ -12,7 +12,7 @@ public class RouteValidator {
 
     public void isRouteValid(Long routeId) {
         if(!routeDao.existRoute(routeId)) {
-            throw new RouteNotFoundException("Такого маршрута не существует");
+            throw new RouteNotFoundException("route.not.found");
         }
     }
 

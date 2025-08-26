@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record RefreshTokenRequest(
-        @NotBlank(message = "Refresh Token не может быть пустым")
+        @NotBlank(message = "{refresh.token.blank}")
         @JsonProperty("refresh_token")
-        @Size(max = 255, message = "Refresh_token не больше 255 символов")
+        @Size(max = 255, message = "{refresh.token.size}")
         String refreshToken
 ) {
 }

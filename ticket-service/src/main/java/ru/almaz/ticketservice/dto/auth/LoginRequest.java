@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record LoginRequest(
-        @NotBlank(message = "Email не может быть пустым")
-        @Email(message = "Неправильный email")
-        @Size(max = 255, message = "Email не больше 255 символов")
+        @NotBlank(message = "{email.blank}")
+        @Email(message = "{email.invalid}")
+        @Size(max = 255, message = "{email.size}")
         String email,
 
-        @NotBlank(message = "Пароль не может быть пустым")
-        @Size(max = 255, message = "Пароль не больше 255 символов")
+        @NotBlank(message = "{password.blank}")
+        @Size(max = 255, message = "{password.size.max}")
         String password
 ) {
 }

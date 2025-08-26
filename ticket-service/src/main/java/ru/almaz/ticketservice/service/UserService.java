@@ -34,7 +34,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User getUserByEmail(String email) {
         return userDao.findByEmail(email).
-                orElseThrow(()->new UserNotFoundException("Пользователь не найден"));
+                orElseThrow(()->new UserNotFoundException("user.not.found"));
     }
 
     public Long getCurrentUserId() {

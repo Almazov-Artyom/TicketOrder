@@ -26,7 +26,7 @@ public class TicketValidator {
 
         if (departureDate != null && departureTime == null) {
             if (departureDate.isBefore(LocalDate.now()))
-                throw new InvalidDepartureTimeException("Дата/время не валидны");
+                throw new InvalidDepartureTimeException("ticket.departure.time.invalid");
             departureDateTime = departureDate.equals(LocalDate.now()) ?
                     LocalDateTime.now() : departureDate.atStartOfDay();
         }
@@ -34,13 +34,13 @@ public class TicketValidator {
         if (departureDate != null && departureTime != null) {
             LocalDateTime localDateTime = LocalDateTime.of(departureDate, departureTime);
             if (localDateTime.isBefore(LocalDateTime.now()))
-                throw new InvalidDepartureTimeException("Дата/время не валидны");
+                throw new InvalidDepartureTimeException("ticket.departure.time.invalid");
             departureDateTime = localDateTime;
         }
 
         if (departureDate == null && departureTime != null) {
             if(departureTime.isBefore(LocalTime.now()))
-                throw new InvalidDepartureTimeException("Дата/время не валидны");
+                throw new InvalidDepartureTimeException("ticket.departure.time.invalid");
             departureDateTime = LocalDateTime.of(LocalDate.now(), departureTime);
         }
 
@@ -49,6 +49,6 @@ public class TicketValidator {
 
     public void isTickedValid(Long ticketId){
         if(!ticketDao.existTicket(ticketId))
-            throw new TicketNotFoundException("Такой билет не найден");
+            throw new TicketNotFoundException("ticket.not.found");
     }
 }

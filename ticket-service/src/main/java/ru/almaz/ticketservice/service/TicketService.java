@@ -52,7 +52,7 @@ public class TicketService {
 
         Ticket ticket = ticketDao.updateTicketStatusAndUserId(userId, ticketId);
 
-        if (ticket == null) throw new TicketUnavailableException("Билет не доступен для покупки");
+        if (ticket == null) throw new TicketUnavailableException("ticket.unavailable");
 
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override

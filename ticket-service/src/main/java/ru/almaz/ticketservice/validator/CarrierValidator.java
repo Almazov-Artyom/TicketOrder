@@ -13,7 +13,7 @@ public class CarrierValidator {
 
     public void isCarrierValid(Long carrierId) {
         if(!carrierDao.existCarrier(carrierId)) {
-            throw new CarrierNotFoundException("Такого перевозчика не существует");
+            throw new CarrierNotFoundException("carrier.not.found");
         }
     }
 }

@@ -6,13 +6,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record AddCarrierRequest(
-        @NotBlank(message = "Имя не может быть пустым")
-        @Size(max = 255, message = "Название не больше 255 символов")
+        @NotBlank(message = "{carrier.name.blank}")
+        @Size(max = 255, message = "{carrier.name.size}")
         String name,
 
-        @NotBlank(message = "Номер телефона не может быть пустым")
+        @NotBlank(message = "{carrier.phone.blank}")
         @JsonProperty("phone_number")
-        @Pattern(regexp = "\\+?[\\d\\- ]{10,16}", message = "Номер телефона должен содержать от 10 до 15 цифр, возможно с +. Для разделения можно использовать пробел или тире")
+        @Pattern(regexp = "\\+?[\\d\\- ]{10,16}", message = "{carrier.phone.invalid}")
         String phoneNumber
 
 ){

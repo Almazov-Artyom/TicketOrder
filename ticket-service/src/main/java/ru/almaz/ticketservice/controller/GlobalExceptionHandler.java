@@ -1,12 +1,14 @@
 package ru.almaz.ticketservice.controller;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,26 +16,33 @@ import ru.almaz.ticketservice.exception.*;
 
 import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
+import java.util.Locale;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final MessageSource messageSource;
+
+    private String getMessage(RuntimeException e, Locale locale) {
+        return messageSource.getMessage(e.getMessage(), null, e.getMessage(), locale);
+    }
+
     @ExceptionHandler({
             UserAlreadyExistException.class,
-            UsernameNotFoundException.class,
             InvalidDepartureTimeException.class,
             TicketUnavailableException.class,
     })
-    public ProblemDetail handleBadRequestException(RuntimeException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    public ProblemDetail handleBadRequestException(RuntimeException e, Locale locale) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, getMessage(e, locale));
     }
 
     @ExceptionHandler({
             UserUnauthenticatedException.class,
-            InvalidAccessTokenException.class,
             InvalidRefreshTokenException.class
     })
-    public ProblemDetail handleUserUnauthenticatedException(RuntimeException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
+    public ProblemDetail handleUserUnauthenticatedException(RuntimeException e, Locale locale) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, getMessage(e, locale));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -46,7 +55,9 @@ public class GlobalExceptionHandler {
         ProblemDetail response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation Error");
         response.setProperty(
                 "errors",
-                ex.getAllErrors().stream().map(ObjectError::getDefaultMessage).toList()
+                ex.getAllErrors().stream()
+                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                        .toList()
         );
         return response;
     }
@@ -57,8 +68,8 @@ public class GlobalExceptionHandler {
             TicketNotFoundException.class,
             UserNotFoundException.class,
     })
-    public ProblemDetail handleNotFoundException(RuntimeException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+    public ProblemDetail handleNotFoundException(RuntimeException e, Locale locale) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,  getMessage(e, locale));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

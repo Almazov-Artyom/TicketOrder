@@ -7,14 +7,14 @@ import ru.almaz.ticketservice.annotation.ColumnMapping;
 import ru.almaz.ticketservice.annotation.NotBlankIfPresent;
 
 public record UpdateCarrierDto (
-        @NotBlankIfPresent(message = "Название перевозчика не может быть пустым")
-        @Size(max = 255, message = "Название не больше 255 символов")
+        @NotBlankIfPresent(message = "{carrier.name.blank}")
+        @Size(max = 255, message = "{carrier.name.size}")
         String name,
 
         @JsonProperty("phone_number")
         @ColumnMapping("phone_number")
-        @NotBlankIfPresent(message = "Номер телефона не может быть пустым")
-        @Pattern(regexp = "\\+?[\\d\\- ]{10,16}", message = "Номер телефона должен содержать от 10 до 15 цифр, возможно с +. Для разделения можно использовать пробел или тире")
+        @NotBlankIfPresent(message = "{carrier.phone.blank}")
+        @Pattern(regexp = "\\+?[\\d\\- ]{10,16}", message = "{carrier.phone.invalid}")
         String phoneNumber
 ){
 }

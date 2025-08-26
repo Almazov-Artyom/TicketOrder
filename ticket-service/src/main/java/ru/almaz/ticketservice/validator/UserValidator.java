@@ -12,7 +12,7 @@ public class UserValidator {
 
     public void isEmailValid(String email) {
         if (userDao.findByEmail(email).isPresent()) {
-            throw new UserAlreadyExistException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistException("user.already.exist");
         }
     }
 }

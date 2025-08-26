@@ -8,20 +8,20 @@ import ru.almaz.ticketservice.annotation.NotBlankIfPresent;
 
 
 public record UpdateRouteRequest(
-        @NotBlankIfPresent(message = "Пункт отправление не может быть пустым")
-        @Size(max = 255, message = "Пункт отправления не больше 255 символов")
+        @NotBlankIfPresent(message = "{route.origin.blank}")
+        @Size(max = 255, message = "{route.origin.size}")
         String origin,
 
-        @NotBlankIfPresent(message = "Пункт назначения не может быть пустым")
-        @Size(max = 255, message = "Пункт назначения не больше 255 символов")
+        @NotBlankIfPresent(message = "{route.destination.blank}")
+        @Size(max = 255, message = "{route.destination.size}")
         String destination,
 
         @ColumnMapping("carrier_id")
         @JsonProperty("carrier_id")
-        @Positive(message = "carrier_id должна быть положительной")
+        @Positive(message = "{route.carrier.id.positive}")
         Long carrierId,
 
-        @Positive(message = "Длительность должна быть положительной")
+        @Positive(message = "{route.duration.positive}")
         Integer duration
 ) {
 }

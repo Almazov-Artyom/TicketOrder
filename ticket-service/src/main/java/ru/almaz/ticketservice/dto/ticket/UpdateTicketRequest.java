@@ -18,7 +18,7 @@ public record UpdateTicketRequest(
 
         @ColumnMapping("route_id")
         @JsonProperty("route_id")
-        @Positive(message = "route_id должен быть положительный")
+        @Positive(message = "{ticket.route.id.positive}")
         Long routeId,
 
         @JsonProperty("departure_time")
@@ -28,17 +28,17 @@ public record UpdateTicketRequest(
 
         @JsonProperty("seat_number")
         @ColumnMapping("seat_number")
-        @NotBlankIfPresent(message = "Номер места не может быть пустым")
-        @Size(max = 255, message = "Номер места не больше 255 символов")
+        @NotBlankIfPresent(message = "{ticket.seat.number.blank}")
+        @Size(max = 255, message = "{ticket.seat.number.size}")
         String seatNumber,
 
-        @Positive(message = "Цена должна быть положительной")
+        @Positive(message = "{ticket.price.positive}")
         BigDecimal price,
 
         @JsonDeserialize(using = UppercaseDeserializer.class)
-        @NotBlankIfPresent(message = "Статус билета не может быть пустым")
-        @EnumValid(enumClass = TicketStatus.class, message = "Некорректный статус билета")
-        @Size(max = 50, message = "Статус билета не больше 50 символов")
+        @NotBlankIfPresent(message = "{ticket.status.blank}")
+        @EnumValid(enumClass = TicketStatus.class, message = "{ticket.status.invalid}")
+        @Size(max = 50, message = "{ticket.status.size}")
         String status
 ) {
 }

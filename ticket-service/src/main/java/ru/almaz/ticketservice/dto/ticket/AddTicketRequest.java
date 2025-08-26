@@ -8,24 +8,24 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public record AddTicketRequest(
-        @NotNull(message = "route_id не может быть null")
+        @NotNull(message = "{ticket.route.id.null}")
         @JsonProperty("route_id")
-        @Positive(message = "route_id должен быть положительным")
+        @Positive(message = "{ticket.route.id.positive}")
         Long routeId,
 
-        @NotNull(message = "departure_time не может быть null")
+        @NotNull(message = "{ticket.departure.time.null}")
         @JsonProperty("departure_time")
         @JsonFormat(pattern = "dd.MM.yyyy H:mm")
-        @Future(message = "Дата не должны быть в прошлом")
+        @Future(message = "{ticket.departure.time.future}")
         Timestamp departureTime,
 
-        @NotBlank(message = "Номер места не может быть пустым")
+        @NotBlank(message = "{ticket.seat.number.blank}")
         @JsonProperty("seat_number")
-        @Size(max = 255, message = "Номер места не больше 255 символов")
+        @Size(max = 255, message = "{ticket.seat.number.size}")
         String seatNumber,
 
-        @NotNull(message = "Цена не можеть быть null")
-        @Positive(message = "Цена должна быть положительной")
+        @NotNull(message = "{ticket.price.null}")
+        @Positive(message = "{ticket.price.positive}")
         BigDecimal price
 ) {
 }
