@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT",
         name = "bearerAuth",
-        description = "Используйте токен для авторизации. Пример: 'Authorization: Bearer <token>'"
+        description = "Используйте токен для авторизации. Пример: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6IjMiLCJpYXQiOjE3NTYyMzU0ODYsImV4cCI6MTc1NjI0MTQ4Nn0.wsI9ulJhHlBez3ccZFtHAHe6jA0s3gv-4rhyioxFWIc"
 )
 public class OpenApiConfig {
 
@@ -35,7 +35,7 @@ public class OpenApiConfig {
                                         .type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                                        .description("Используйте токен для авторизации. Пример: 'Authorization: Bearer <token>'")
+                                        .description("Используйте токен для авторизации")
                         ))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
