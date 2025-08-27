@@ -23,4 +23,4 @@
    ```
 4. **Swagger документация**  
    Swagger UI будет доступен по адресу:  
-   [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+   [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
